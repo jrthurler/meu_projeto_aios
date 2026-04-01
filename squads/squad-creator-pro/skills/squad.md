@@ -56,18 +56,6 @@ subagents:
     permissionMode: default
     memory: project
 
-  sop-extractor:
-    description: |
-      SOP extraction specialist. Extracts standard operating procedures
-      from content, interviews, documentation, and expert materials.
-    model: sonnet
-    tools:
-      - Read
-      - Grep
-      - Write
-    permissionMode: acceptEdits
-    memory: project
-
 hooks:
   PreToolUse:
     - matcher: "Write"
@@ -148,6 +136,7 @@ For every mind-based agent:
 | `*clone-mind {name}` | Clone single mind into agent |
 | `*create-agent` | Create agent from DNA |
 | `*validate-squad` | Run quality validation |
+| `*workspace-hardening {squad}` | Audit + remediate workspace integration contract |
 | `*resume` | Continue interrupted workflow |
 | `*status` | Show current state |
 | `*help` | Show all commands |
@@ -159,6 +148,7 @@ I read workflows from `squads/squad-creator-pro/workflows/` as data:
 - `wf-create-squad.yaml` - Master workflow (1300+ lines)
 - `wf-clone-mind.yaml` - Mind cloning pipeline
 - `wf-discover-tools.yaml` - Tool discovery
+- `wf-workspace-integration-hardening.yaml` - Workspace contract hardening pipeline
 
 ### State Persistence
 State persisted in `squads/squad-creator-pro/.state.json`:
@@ -261,7 +251,6 @@ When user mentions squad creation, I:
 |------------|-------|-------------|
 | @oalanicolas | `/squad:oalanicolas` | Mind cloning, DNA extraction |
 | @pedro-valerio | `/squad:pedro-valerio` | Process validation, workflow audit |
-| @sop-extractor | `/squad:sop-extractor` | Extract SOPs from content |
 
 ## Quick Start
 

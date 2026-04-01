@@ -1,7 +1,20 @@
 # Task: Extract DNA Mental
 
 **Command:** `*extract-dna {mind}`
+**Execution Type:** Hybrid
+**Model:** Sonnet
+**Haiku Eligible:** NO
 **Load:** `data/an-source-tiers.yaml`
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-EDN-001 | Source material must be classified and scored before extraction begins | Verify source map exists with OURO/BRONZE classification from Phase 1 | VETO - BLOCK. Cannot extract DNA without classified source material. |
+| VETO-EDN-002 | Each layer must have SE/ENTAO framework extracted, not just behavioral description | Verify extracted layer contains conditional logic (SE/ENTAO), not only narrative description | VETO - BLOCK. Re-extract layer focusing on decision frameworks, not surface behavior. |
+| VETO-EDN-003 | Report must include fidelity estimate with evidence before handoff | Verify dna_extraction_report.fidelity_estimate exists and is backed by layer scores | VETO - BLOCK. Cannot hand off extraction without quantified fidelity assessment. |
+
+> Legacy format retained as domain-specific complement: CHECKPOINTs embedded in workflow phases below provide granular mental-model validation at each extraction step.
 
 ## Purpose
 
@@ -18,7 +31,36 @@ Extrair o DNA Mental completo (8 camadas) de uma mente especifica, documentando 
    - **BRONZE**: Palestras decoradas, conteudo antigo, generico, terceiros
 4. Gerar Source Map com score de curadoria
 
+#### >>> CHECKPOINT: Eficiência da curadoria <<<
+
+```yaml
+checkpoint_liberdade:
+  consult: "VALUES.liberdade_criativa"
+  question: "Processo de curadoria pode ser REUTILIZADO para próxima extração?"
+  if_sim: "Documentar template para reusar"
+  if_nao: "Criar template agora — curadoria bem feita uma vez libera tempo depois"
+  rationale: "Documentar pra delegar → estrutura que libera."
+```
+
 ### Phase 2: Layer Extraction
+
+#### >>> CHECKPOINTS: Profundidade + Exploração antes de filtrar <<<
+
+```yaml
+checkpoint_profundidade:
+  consult: "OBSESSIONS.clareza_compreensao_profunda"
+  question: "Para cada layer, extraí o FRAMEWORK implícito ou só descrevi comportamento?"
+  if_framework: "Layer com SE/ENTÃO documentado — válido"
+  if_descricao: "Buscar o SE/ENTÃO por trás do comportamento observado"
+  rationale: "Layer sem framework = descrição. Layer com framework = engine replicável."
+
+checkpoint_caos_antes_clareza:
+  consult: "PARADOXES.clarity_from_chaos"
+  question: "Permiti EXPLORAÇÃO ampla (caos) ANTES de filtrar (clareza)?"
+  if_sim: "Modo Cientista Maluco → Modo Crítico Exigente"
+  if_nao: "Voltar e explorar mais amplamente antes de destilar"
+  rationale: "Filtrar cedo demais = perder insights. Caos é INPUT, clareza é OUTPUT."
+```
 
 Para cada camada do DNA Mental, extrair patterns das fontes OURO:
 
@@ -46,6 +88,17 @@ Extrair e documentar:
 
 ### Phase 4: Document Thinking DNA
 
+#### >>> CHECKPOINT: Clareza do Thinking DNA <<<
+
+```yaml
+checkpoint_clareza_thinking:
+  consult: "VALUES.clareza_radical"
+  question: "Decision architecture extraída é CLARA e ACTIONABLE?"
+  if_clara: "Prosseguir para report"
+  if_vaga: "Refinar até ter pipeline de decisão explícito"
+  rationale: "Thinking DNA genérico = clone que não pensa igual."
+```
+
 Extrair e documentar:
 - Primary framework (o framework MESTRE da pessoa)
 - Secondary frameworks (3-6 complementares)
@@ -55,6 +108,17 @@ Extrair e documentar:
 - Decision architecture (pipeline + weights)
 
 ### Phase 5: Generate Report
+
+#### >>> CHECKPOINT: Output traz clareza? <<<
+
+```yaml
+checkpoint_clarity_first:
+  consult: "MODELS.clarity_first"
+  question: "Report final traz CLAREZA ou CONFUSÃO?"
+  if_clareza: "Output pronto"
+  if_confusao: "Simplificar output até trazer clareza"
+  rationale: "Output confuso = extração falhou, independente do conteúdo."
+```
 
 Gerar report YAML com:
 

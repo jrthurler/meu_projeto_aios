@@ -36,6 +36,13 @@ Invocar `wf-model-tier-qualification.yaml` para testar empiricamente se uma task
 
 ## Veto Conditions
 
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-QFT-001 | Task file must exist before qualification can proceed | Verify file exists at squads/squad-creator-pro/tasks/{task_name}.md | VETO - BLOCK. Task not found in squad task catalog. |
+| VETO-QFT-002 | Task must have test_input defined in workflow registry | Lookup wf-model-tier-qualification.yaml test_input_registry.{task_name} | VETO - BLOCK. Add test_input to workflow registry before qualifying. |
+| VETO-QFT-003 | Task must not already be qualified unless forced | Check config/model-routing.yaml tasks.{task_name}.validated | VETO - BLOCK. Already qualified. Use --force flag to re-test. |
+
+> Legacy format retained as domain-specific complement:
 - [ ] VETO se task não existe em `squads/squad-creator-pro/tasks/`
 - [ ] VETO se task não tem `test_input` no registry do workflow
 - [ ] VETO se já está qualificada em `model-routing.yaml` (use `--force` para re-testar)

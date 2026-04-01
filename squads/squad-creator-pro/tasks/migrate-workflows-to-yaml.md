@@ -2,27 +2,41 @@
 
 **Task ID:** `migrate-workflows-to-yaml`
 **Pattern:** HO-TP-001 (Task Anatomy Standard)
-**Version:** 1.0.0
-**Last Updated:** 2026-02-05
+**Version:** 1.1.0
+**Last Updated:** 2026-02-11
+**Execution Type:** Hybrid (parsing/validation scripts + Agent for semantic conversion)
+**Model:** `Sonnet` (requires understanding workflow semantics for proper conversion)
+**Haiku Eligible:** NO — semantic understanding needed for accurate conversion
 
 ## Task Anatomy
 
 | Field | Value |
 |-------|-------|
 | **task_name** | Migrate Workflows to YAML |
-| **status** | `completed` |
+| **status** | `active` |
 | **responsible_executor** | @squad-chief |
-| **execution_type** | `Agent` |
-| **input** | Workflow .md files in workflows/ folder |
+| **execution_type** | `Hybrid` |
+| **input** | Workflow .md files in any squad's workflows/ folder |
 | **output** | Migrated .yaml files + archived .md files |
 | **action_items** | 4 steps |
 | **acceptance_criteria** | 3 criteria |
 
-**Estimated Time:** 30min
+**Estimated Time:** 30min per workflow
+**Note:** Reusable task for any squad with legacy .md workflows
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-MWY-001 | Dry-run output must be reviewed before conversion is applied | Generate YAML preview for each .md file and validate syntax before writing | VETO - BLOCK. Fix YAML syntax errors in preview before applying conversion. |
+| VETO-MWY-002 | Original .md files must be archived before deletion or overwrite | Verify _archive/ directory exists and originals are copied before any modification | VETO - BLOCK. Create archive backup of all source .md files before proceeding. |
+| VETO-MWY-003 | All cross-references to .md workflow files must be identified before archiving | Grep for references to source .md filenames across tasks, workflows, and config files | VETO - BLOCK. Update all references to point to new .yaml files before archiving originals. |
+
+---
 
 ## Overview
 
-Migrar workflows em formato `.md` (legacy/narrativo) para o formato `.yaml` padrão do AIOS.
+Migrar workflows em formato `.md` (legacy/narrativo) para o formato `.yaml` padrão do AIOX.
 
 **Motivação:**
 - Consistência no ecossistema (todos workflows em .yaml)
@@ -30,9 +44,10 @@ Migrar workflows em formato `.md` (legacy/narrativo) para o formato `.yaml` padr
 - Suporte a tooling (templates, linters, geradores)
 - Validação por schema
 
-**Arquivos a migrar:**
-1. `workflows/mind-research-loop.md` → `workflows/wf-mind-research-loop.yaml`
-2. `workflows/research-then-create-agent.md` → `workflows/wf-research-then-create-agent.yaml`
+**Exemplo de arquivos a migrar:**
+```
+squads/{squad-name}/workflows/*.md → squads/{squad-name}/workflows/wf-*.yaml
+```
 
 ## Input
 
@@ -44,7 +59,7 @@ Migrar workflows em formato `.md` (legacy/narrativo) para o formato `.yaml` padr
 - **template** (file)
   - Description: Template de workflow YAML
   - Required: Yes
-  - Source: `squads/squad-creator-pro/templates/workflow-tmpl.yaml`
+  - Source: `squads/squad-creator/templates/workflow-tmpl.yaml`
 
 ## Output
 
@@ -253,7 +268,7 @@ phases:
 
 ---
 
-_Task Version: 1.0.0_
+_Task Version: 1.1.0_
 _Pattern: HO-TP-001 (Task Anatomy Standard)_
-_Last Updated: 2026-02-05_
+_Last Updated: 2026-02-11_
 _Compliant: Yes_

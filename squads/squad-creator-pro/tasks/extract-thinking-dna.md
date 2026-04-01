@@ -1,7 +1,11 @@
 ---
 task-id: extract-thinking-dna
 name: Extract Thinking DNA (Frameworks + Heuristics + Decisions)
-version: 1.2.0
+version: 1.3.0
+execution_type: Agent
+model: Opus
+haiku_eligible: false
+model_rationale: "Síntese de frameworks e heurísticas requer interpretação profunda - não determinístico"
 note: "Exemplos usam copywriting. Substitua pelo seu domínio."
 estimated-time: 1-2 hours
 complexity: medium
@@ -30,6 +34,16 @@ elicit: true
 > **Objetivo:** Extrair COMO um expert pensa - seus frameworks, heurísticas e arquitetura de decisão.
 >
 > **Filosofia:** "Clone minds > create bots" - Pessoas reais têm skin in the game, suas decisões foram testadas no mundo real.
+
+---
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-ETD-001 | Minimum 5 sources with documented methodology must be available before extraction | Verify sources input contains >= 5 items with methodology content | VETO - BLOCK. Run collect-sources to acquire sufficient material before extracting thinking DNA. |
+| VETO-ETD-002 | Existing thinking_dna block in agent file must be backed up before modification | Check if target agent.md already contains a thinking_dna section | VETO - BLOCK. Create snapshot of current thinking DNA before overwriting. |
+| VETO-ETD-003 | All extracted heuristics and frameworks must be traceable to source evidence | Validate that each framework/heuristic has non-empty evidence or source field | VETO - BLOCK. Remove unsourced entries or find supporting evidence before finalizing output. |
 
 ---
 
@@ -580,7 +594,7 @@ thinking_dna:
     steps:
       - step: 1
         name: "Message"
-        action: "Craft message that repels wrong clients, attracts right ones"
+        action: "Morpheus message that repels wrong clients, attracts right ones"
       - step: 2
         name: "Market"
         action: "Identify where your ideal clients congregate"

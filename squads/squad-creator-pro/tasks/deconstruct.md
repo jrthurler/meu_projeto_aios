@@ -2,6 +2,10 @@
 
 > **Perguntas de Desconstrução** | Revelar frameworks ocultos de experts
 
+**Execution Type:** Agent
+**Model:** Opus
+**Haiku Eligible:** NO
+
 ## Objetivo
 
 Aplicar perguntas de desconstrução para extrair frameworks, heurísticas e padrões de decisão que o expert usa mas não articula explicitamente.
@@ -11,6 +15,17 @@ Aplicar perguntas de desconstrução para extrair frameworks, heurísticas e pad
 Metodologia absorvida de Tim Ferriss (4-Hour series, Tools of Titans, Tribe of Mentors).
 
 ---
+
+#### >>> CHECKPOINT: Perguntas revelam DECISÃO, não só AÇÃO <<<
+
+```yaml
+checkpoint_profundidade_perguntas:
+  consult: "OBSESSIONS.clareza_compreensao_profunda"
+  question: "Perguntas revelam COMO o expert DECIDE ou só O QUE faz?"
+  if_decisao: "Documentar frameworks de decisão"
+  if_acao: "Reformular perguntas para focar em decisão (não ação)"
+  rationale: "O QUE faz = superfície. COMO decide = framework real."
+```
 
 ## As 7 Perguntas Core
 
@@ -54,12 +69,36 @@ Metodologia absorvida de Tim Ferriss (4-Hour series, Tools of Titans, Tribe of M
 ## Perguntas Complementares
 
 ### Para Aprofundar Respostas
+
+#### >>> CHECKPOINT: Resposta traz clareza? <<<
+
+```yaml
+checkpoint_clareza_resposta:
+  consult: "VALUES.clareza_radical"
+  question: "Resposta traz CLAREZA sobre como o expert decide?"
+  if_clareza: "Documentar com [SOURCE:]"
+  if_vaga: "Aprofundar com 'Can you give me a specific example?'"
+  rationale: "Resposta vaga = não extraiu nada útil."
+```
+
 - "Can you give me a specific example?"
 - "When did you learn that?"
 - "What was the cost of NOT doing that?"
 - "How would you teach this to a beginner?"
 
 ### Para Revelar Frameworks
+
+#### >>> CHECKPOINT: Princípios fundamentais? <<<
+
+```yaml
+checkpoint_first_principles:
+  consult: "MODELS.first_principles_thinking"
+  question: "Desconstruí até os PRINCÍPIOS FUNDAMENTAIS ou aceitei a superfície?"
+  if_fundamental: "Framework com princípios base documentados"
+  if_superficie: "Aplicar 'Por quê?' mais 3 vezes até chegar em axioma"
+  rationale: "Sem princípios base = framework superficial que quebra em contexto novo."
+```
+
 - "Is there a name for this approach?"
 - "Do you have a checklist or process?"
 - "What are the steps in order?"
@@ -132,6 +171,17 @@ Metodologia absorvida de Tim Ferriss (4-Hour series, Tools of Titans, Tribe of M
 ### Citações Diretas (verificáveis)
 1. "{citação}" [SOURCE: {fonte}]
 2. "{citação}" [SOURCE: {fonte}]
+```
+
+#### >>> CHECKPOINT: Explorou caos antes de sintetizar? <<<
+
+```yaml
+checkpoint_caos_sintese:
+  consult: "PARADOXES.clarity_from_chaos"
+  question: "Explorei CAOS (muitas perguntas, tangentes) antes de DESTILAR (síntese)?"
+  if_explorou: "Síntese rica com base ampla"
+  if_filtrou_cedo: "Explorar mais — tangentes revelam surpresas"
+  rationale: "Síntese sem exploração = óbvio. Síntese com exploração = insight."
 ```
 
 ---

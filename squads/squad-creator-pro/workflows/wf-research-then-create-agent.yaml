@@ -19,7 +19,7 @@ description: |
   This workflow ensures agents are built on REAL frameworks and methodologies
   from domain experts. All claims are traceable to sources.
 
-  Quality Standard: AIOS Level (800+ lines, full semantic depth)
+  Quality Standard: AIOX Level (800+ lines, full semantic depth)
 
 orchestrator: "@squad-chief"
 mode: YOLO  # 100% autonomous, no human intervention
@@ -101,7 +101,7 @@ inputs:
       - "Gary Halbert"
       - "David Ogilvy"
 
-  - name: pack_name
+  - name: squad_name
     type: string
     required: true
     description: "Target squad name"
@@ -127,12 +127,12 @@ outputs:
 
   agent:
     - name: "agent_definition"
-      path: "squads/{pack_name}/agents/{agent_id}.md"
+      path: "squads/{squad_name}/agents/{agent_id}.md"
       description: "Complete agent definition (800+ lines)"
 
   tasks:
     - name: "agent_tasks"
-      path: "squads/{pack_name}/tasks/{task_id}.md"
+      path: "squads/{squad_name}/tasks/{task_id}.md"
       description: "Agent tasks based on framework (600+ lines each)"
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -140,7 +140,7 @@ outputs:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 preconditions:
-  - "Squad exists at squads/{pack_name}/"
+  - "Squad exists at squads/{squad_name}/"
   - "If specialist: check if mind exists in outputs/minds/{specialist_slug}/"
   - "WebSearch tool available (for external research)"
   - "Write permissions for output directories"
@@ -162,7 +162,7 @@ phases:
     actions:
       - "Extract agent_purpose, domain, specialist info"
       - "Classify agent type (generic vs specialist_based)"
-      - "Validate pack_name exists"
+      - "Validate squad_name exists"
       - "Set output paths"
 
     decision_point:
@@ -189,7 +189,7 @@ phases:
         specialist:
           slug: "string"
           name: "string"
-        pack_name: "string"
+        squad_name: "string"
         research_output: "path"
 
     checkpoint:
@@ -507,7 +507,7 @@ phases:
     duration: "3-5 minutes"
     description: |
       Create agent definition using extracted framework.
-      Must include all 6 levels per AIOS standard.
+      Must include all 6 levels per AIOX standard.
 
     dependency: "tasks/create-agent.md"
     framework: "tier-system-framework.md"
@@ -856,7 +856,7 @@ examples:
         --domain "copywriting" \
         --specialist-slug "gary-halbert" \
         --specialist-name "Gary Halbert" \
-        --pack-name "copy"
+        --squad-name "copy"
 
   - name: "Generic Domain Agent"
     command: |
@@ -864,7 +864,7 @@ examples:
       *workflow research-then-create-agent \
         --agent-purpose "Conduct user interviews for product discovery" \
         --domain "product-management" \
-        --pack-name "product"
+        --squad-name "product"
 
   - name: "Multiple Specialists (Blended)"
     command: |
@@ -875,7 +875,7 @@ examples:
         --specialist-slug "jon-benson" \
         --specialist-name "Jon Benson" \
         --secondary-specialists "eugene-schwartz,gary-halbert" \
-        --pack-name "copy"
+        --squad-name "copy"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # RELATED RESOURCES

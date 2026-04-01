@@ -2,6 +2,9 @@
 
 **Task ID:** squad-fusion
 **Version:** 2.0.0
+**Execution Type:** Agent
+**Model:** Opus
+**Haiku Eligible:** NO
 **Purpose:** Fundir múltiplos squads similares em um único squad otimizado
 **Orchestrator:** @squad-chief
 **Mode:** Interactive
@@ -50,6 +53,15 @@ A Fusão de Squads combina múltiplos squads com domínios similares em um únic
 ║                                                                               ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 ```
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-SFU-001 | Fusion requires at least two valid source squads | Verify `sources.length >= 2` and all source directories exist/readable before Phase 1 | VETO - BLOCK. Provide at least two valid source squads before starting fusion. |
+| VETO-SFU-002 | Dry-run inventory and conflict analysis must be generated before destructive merge | Verify discovery inventory + duplicates/conflicts reports exist and were reviewed | VETO - BLOCK. Execute dry-run analysis first; do not merge without inventory evidence. |
+| VETO-SFU-003 | Rollback path must be ready before modifying source/target squads | Verify target snapshot and rollback procedure are prepared prior to Phase 4 execution | VETO - BLOCK. Prepare rollback artifacts before applying fusion writes/deletes. |
+| VETO-SFU-004 | Cleanup operations require quality gates pass | Verify `quality_score >= 7.0` and `blocking_gates_failed == 0` before archive/delete actions | VETO - BLOCK. Abort cleanup when quality gates fail; resolve issues first. |
 
 ---
 

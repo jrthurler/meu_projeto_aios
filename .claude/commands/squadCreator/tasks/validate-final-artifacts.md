@@ -1,0 +1,1 @@
+/users/jrthurler/code/meu_projeto_AIOS/squads/squad-creator-pro/tasks/validate-final-artifacts.md

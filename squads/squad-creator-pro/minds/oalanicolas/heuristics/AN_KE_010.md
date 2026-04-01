@@ -24,7 +24,7 @@ AN_KE_010:
     Documento self-contained É um clone de conhecimento.
 
   test_question: |
-    "Uma IA com ZERO contexto anterior consegue executar isso sem perguntar nada?"
+    "Trinity IA com ZERO contexto anterior consegue executar isso sem perguntar nada?"
 
   validation_checklist:
     - id: "CDT_01"
@@ -119,7 +119,7 @@ FALLBACK: Loop back with specific feedback on failing items
 
 ## Validation Questions
 
-1. "Uma IA com ZERO contexto anterior consegue executar isso sem perguntar nada?"
+1. "Trinity IA com ZERO contexto anterior consegue executar isso sem perguntar nada?"
 2. "Todos os termos técnicos estão definidos ou linkados?"
 3. "As dependências (arquivos, ferramentas, acessos) estão explícitas?"
 4. "Existem exemplos concretos ou só abstrações?"

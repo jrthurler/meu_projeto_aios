@@ -1,0 +1,1 @@
+/users/jrthurler/code/meu_projeto_AIOS/squads/zona-genialidade/tasks/analyze-genius-profile.md

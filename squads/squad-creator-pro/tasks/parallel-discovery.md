@@ -3,6 +3,8 @@
 **Task ID:** parallel-discovery
 **Version:** 1.0.0
 **Execution Type:** Hybrid (Worker parallelization + Agent synthesis)
+**Model:** Sonnet
+**Haiku Eligible:** NO
 **Purpose:** Run domain discovery streams in parallel and merge deterministically
 **Orchestrator:** @squad-chief
 

@@ -1,5 +1,11 @@
 ---
 task: Extract Knowledge (Framework → SOP → Checklist)
+task_id: extract-knowledge
+version: 1.1.0
+execution_type: Agent
+model: Opus
+model_rationale: "Complex semantic extraction (Framework → SOP → Checklist). Zero invention constraint requires deep comprehension."
+haiku_eligible: false
 responsavel: "@tim-ferriss"
 responsavel_type: agent
 atomic_layer: task
@@ -22,6 +28,16 @@ config:
 **Agent:** @tim-ferriss
 **Workflow:** wf-extraction-pipeline
 **Pattern:** Zero Invention - 100% Source-Based Extraction
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-EKN-001 | Source materials must exist and pass SOURCE_COVERAGE gate before extraction begins | Verify sources_path contains files with relevance score >= 5/10 | VETO - BLOCK. Run collect-sources or provide additional materials before proceeding. |
+| VETO-EKN-002 | Existing framework/SOP/checklist files at output paths must be backed up before overwrite | Check if output files already exist at target squad paths | VETO - BLOCK. Create backup of existing extraction files before writing new ones. |
+| VETO-EKN-003 | Zero-invention constraint must be verifiable -- all output claims must have SOURCE citations | Validate anti-invention check is executable against provided sources | VETO - BLOCK. Sources must contain extractable quotes and references before proceeding. |
+
+---
 
 ## Purpose
 

@@ -16,6 +16,14 @@ workflow:
     - phase: upgrade-plan
       task: upgrade-squad
 
+    - phase: workspace-governance
+      task: validate-squad
+      notes: "Ensure upgraded squad declares valid workspace integration level and contract"
+
+    - phase: workspace-hardening
+      task: workspace-integration-hardening
+      notes: "Enforce template-first pairing and apply workspace contract remediations when needed"
+
     - phase: selective-rerun
       task: reexecute-squad-phase
       optional: true
@@ -37,6 +45,14 @@ workflow:
       phase: selective-rerun
       decision: APPROVE_RERUN
 
+    - id: CP_WORKSPACE
+      phase: workspace-governance
+      decision: WORKSPACE_GOVERNANCE_PASS
+
+    - id: CP_WORKSPACE_HARDENING
+      phase: workspace-hardening
+      decision: WORKSPACE_CONTRACT_VALID
+
     - id: CP_FINAL
       phase: quality-final-artifacts
       decision: PASS_OR_REVISE
@@ -44,3 +60,5 @@ workflow:
   outputs:
     - outputs/squad_upgrade/{squad_name}/upgrade-report.yaml
     - outputs/squad_upgrade/{squad_name}/before-after-score.yaml
+    - outputs/squad_upgrade/{squad_name}/workspace-governance-report.yaml
+    - outputs/squad_upgrade/{squad_name}/workspace-hardening-final.yaml

@@ -1,7 +1,22 @@
 # Task: Design Clone Architecture
 
 **Command:** `*design-clone`
+**Execution Type:** Hybrid
+**Model:** Sonnet
+**Haiku Eligible:** NO
 **Load:** — (uses core knowledge)
+
+## Checklist Reference
+
+Before marking this task complete, verify against: `checklists/agent-depth-checklist.md`
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-ADC-001 | Clone usage contexts must be explicit before architecture design | Verify at least one concrete context and user profile are documented in Step 1 | VETO - BLOCK. Stop design and elicit contexts before generating architecture. |
+| VETO-ADC-002 | Existing clone blueprint must be backed up before overwrite | Check if target blueprint artifact already exists and confirm backup snapshot | VETO - BLOCK. Create backup of existing clone blueprint before applying new design. |
+| VETO-ADC-003 | Multi-stage designs must define Trinity per stage before finalization | Verify each stage has playbook/framework/swipe_file mapping in Step 3 output | VETO - BLOCK. Do not finalize clone architecture without stage-level Trinity coverage. |
 
 ## Purpose
 
@@ -19,6 +34,17 @@ Mapear contextos:
 - Vendas, suporte, educacao, consultoria, etc.
 - Tipos de interlocutor (iniciante, avancado, hater, fa)
 
+#### >>> CHECKPOINT: Impacto transformador <<<
+
+```yaml
+checkpoint_impacto:
+  consult: "VALUES.impacto_transformador"
+  question: "Contextos de uso geram TRANSFORMAÇÃO profunda ou resposta superficial?"
+  if_transformador: "Prosseguir com design"
+  if_superficial: "Redesenhar contextos para maximizar impacto"
+  rationale: "Clone que responde perguntas = chatbot. Clone que transforma = valor."
+```
+
 ### Step 2: Decide Stages
 
 **Regra AN004**: SE comportamento muda por contexto → criar estagios.
@@ -26,6 +52,24 @@ Mapear contextos:
 Avaliar necessidade:
 - Single-mode: Comportamento uniforme → prompt unico
 - Multi-stage: Comportamento varia → estagios separados
+
+#### >>> CHECKPOINTS: Estrutura + Autonomia <<<
+
+```yaml
+checkpoint_freedom_structure:
+  consult: "PARADOXES.freedom_through_structure"
+  question: "Estrutura proposta RESTRINGE agora para LIBERAR depois?"
+  if_libera: "Design válido — investimento presente para ganho futuro"
+  if_controla: "Redesenhar: estrutura deve servir à liberdade, não à burocracia"
+  rationale: "Template é investimento: 2h documentando → 20h economizadas depois."
+
+checkpoint_autonomia:
+  consult: "OBSESSIONS.liberdade_autonomia_estrutural"
+  question: "Design do clone HABILITA autonomia do usuário ou cria dependência?"
+  if_autonomia: "Arquitetura que libera"
+  if_dependencia: "Redesenhar para auto-suficiência"
+  rationale: "Clone que cria dependência viola obsessão de autonomia."
+```
 
 Exemplos de estagios:
 - Funil: boas-vindas → qualificacao → oferta
@@ -41,6 +85,17 @@ Para cada estagio, definir:
 |---------|----------|-----------|------------|
 | {nome} | Passo a passo | Regras SE/ENTAO | Exemplos reais |
 
+#### >>> CHECKPOINT: Framework liberta ou aprisiona? <<<
+
+```yaml
+checkpoint_liberation:
+  consult: "MODELS.frameworks_as_liberation"
+  question: "Template/estrutura é rígida pra LIBERAR ou pra PRENDER?"
+  if_libera: "Estrutura que habilita criatividade"
+  if_prende: "Redesenhar: menos campos obrigatórios, mais guidance"
+  rationale: "Framework-prisão = executor odeia. Framework-ferramenta = executor adota."
+```
+
 ### Step 4: Define Memory & Context
 
 - Que informacoes o clone precisa lembrar entre interacoes?
@@ -48,6 +103,23 @@ Para cada estagio, definir:
 - Limites de memoria (curta vs longa)
 
 ### Step 5: Generate Blueprint
+
+#### >>> CHECKPOINT: Blueprint claro + rigidez libertadora <<<
+
+```yaml
+checkpoint_clarity_blueprint:
+  consult: "MODELS.clarity_first"
+  question: "Blueprint é CLARO o suficiente para implementar sem perguntas?"
+  if_claro: "Blueprint válido"
+  if_confuso: "Simplificar até ficar auto-explicativo"
+
+checkpoint_rigidez_verificacao:
+  consult: "PARADOXES.freedom_through_structure"
+  question: "Blueprint é RÍGIDO para LIBERAR ou RÍGIDO para CONTROLAR?"
+  if_liberar: "Rigidez libertadora confirmada"
+  if_controlar: "Investigar onde rigidez controla em vez de liberando"
+  rationale: "Paradoxo é feature. Clone que resolve perde nuance."
+```
 
 ```yaml
 clone_blueprint:

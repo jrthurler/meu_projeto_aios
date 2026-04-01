@@ -1,7 +1,11 @@
 ---
 task-id: collect-sources
 name: Collect & Validate Sources for Mind Cloning
-version: 2.2.0
+version: 2.3.0
+execution_type: Hybrid
+model: Sonnet
+model_rationale: "Source curation (ouro vs bronze) requires semantic judgment. Not Haiku-eligible."
+haiku_eligible: false
 note: "Exemplos usam copywriting. Substitua pelo seu domínio."
 estimated-time: 30-60 min
 complexity: medium
@@ -34,6 +38,17 @@ elicit: true
 > **Princípio Core:** "Single source = hypothesis; three sources = pattern"
 >
 > **Regra:** NUNCA prosseguir para extração sem validar fontes suficientes.
+
+---
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-CSR-001 | mind_name and domain inputs must be provided and non-empty | Validate required inputs before starting discovery phase | VETO - BLOCK. Reject execution and request valid inputs. |
+| VETO-CSR-002 | Existing sources_inventory must be backed up before overwrite | Check if sources_inventory file already exists at target path | VETO - BLOCK. Create backup of existing inventory before proceeding. |
+| VETO-CSR-003 | Quality gate decision must not be bypassed -- GO/CONDITIONAL/NO-GO must be explicitly evaluated | Verify go_no_go_checklist is completed before handoff | VETO - BLOCK. Complete quality gate evaluation before allowing extraction to proceed. |
+| VETO-CSR-004 | `min_sources` and `domain_validation` must pass before approving extraction handoff | Verify `minimum_requirements.total_sources.actual` meets `min_sources` threshold and complete domain_validation relevance review | VETO - BLOCK. Stop handoff until min_sources and domain_validation are satisfied. |
 
 ---
 

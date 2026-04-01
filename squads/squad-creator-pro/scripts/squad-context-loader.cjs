@@ -50,7 +50,7 @@ const AGENT_MAP = {
     role: 'Integration Orchestrator',
     phases: ['integration', 'smoke_test'],
     handoff_to: null,
-    source: 'squads/squad-creator-pro/agents/squad-chief.md'
+    source: 'squads/squad-creator/agents/squad-chief.md'
   }
 };
 

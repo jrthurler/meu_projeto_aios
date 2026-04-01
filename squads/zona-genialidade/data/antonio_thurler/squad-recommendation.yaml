@@ -1,0 +1,185 @@
+squad_recommendation:
+  metadata:
+    aluno: "Antonio Mario Thurler Junior"
+    slug: "antonio_thurler"
+    data_matching: "2026-03-31"
+    version: "1.0.0"
+    algoritmo: "Hamilton(40%) + Kolbe(30%) + Clifton(20%) + Context(10%)"
+    squads_avaliados: 18
+    squads_acima_threshold: 3
+
+  scoring_matrix:
+    creator_os:
+      nome: "Creator-OS"
+      hamilton_score:
+        valor: 0.95
+        peso: 0.40
+        logica: "CREATOR primário exato → Creator-OS é o habitat natural. Lord secundário adiciona capacidade de sistemizar os cursos criados."
+      kolbe_score:
+        valor: 0.93
+        peso: 0.30
+        logica: "Quick Start 8 ≥ 7+ required. Fact Finder 6 dentro do range 4-7. Follow Thru 6 suficiente para completar produtos educacionais."
+      clifton_score:
+        valor: 0.90
+        peso: 0.20
+        logica: "Strategic Thinking + Influencing = os dois domínios ideais para Creator-OS. Ideation+Communication direto no target."
+      context_bonus:
+        valor: 0.95
+        peso: 0.10
+        logica: "Reduka JÁ É um Creator-OS em construção. Antonio tem expertise educacional real, 5-10 anos, três formatos (startup+franquia+V4). Full-time."
+      score_composto: 0.94
+      ranking: 1
+
+    dopamine_learning:
+      nome: "Dopamine Learning"
+      hamilton_score:
+        valor: 0.78
+        peso: 0.40
+        logica: "Creator+Mechanic é o combo ideal para Dopamine Learning. Antonio tem Creator forte. Mechanic/Lord secundário atende parcialmente."
+      kolbe_score:
+        valor: 0.82
+        peso: 0.30
+        logica: "Quick Start 8 ≥ 6+. Fact Finder 6 = exato no 6+ required. Follow Thru 6 adequado."
+      clifton_score:
+        valor: 0.80
+        peso: 0.20
+        logica: "Strategic Thinking + Relationship Building (domínio latente) adequados. Learning como talent 4 é sinal forte de designer instrucional nato."
+      context_bonus:
+        valor: 0.90
+        peso: 0.10
+        logica: "Happy (educação tecnológica para crianças) é exatamente onde Dopamine Learning se aplica. Antonio já opera nesse mercado."
+      score_composto: 0.82
+      ranking: 2
+
+    mentoria_engine:
+      nome: "MentoriaEngine"
+      hamilton_score:
+        valor: 0.72
+        peso: 0.40
+        logica: "Supporter+Star é o ideal; Antonio é Creator+Star (latente). Creator pode operar Mentoria com ajuste de foco para pessoas."
+      kolbe_score:
+        valor: 0.78
+        peso: 0.30
+        logica: "Fact Finder 6 ≥ 5+ e Quick Start 8 ≥ 5+. Ambos dentro do range. Quick Start alto acelera criação de trilhas de mentoria."
+      clifton_score:
+        valor: 0.82
+        peso: 0.20
+        logica: "Relationship Building latente + Influencing forte. Communication no top 5. Capacidade de mentoria está no DNA."
+      context_bonus:
+        valor: 0.85
+        peso: 0.10
+        logica: "Visão declarada de 'conselheiro e investidor'. Antonio já mentora alunos. MentoriaEngine é o veículo para escalar isso."
+      score_composto: 0.77
+      ranking: 3
+
+  anti_recommendations:
+    etl_data_collector:
+      score: 0.21
+      motivo: "Accumulator+Mechanic ideal vs Creator+Lord de Antonio. Fact Finder 8+ required vs 6 real. Drena energia."
+    mmos_mind_mapper:
+      score: 0.28
+      motivo: "Requer Follow Thru 7+ e Fact Finder 8+ — dois pontos acima do perfil real. Alta frustração esperada."
+    marketing_ops:
+      score: 0.45
+      motivo: "Trader+Star ideal; Fact Finder e Follow Thru altos required. Antonio tem QS 8 mas não é Trader. V4 cobre esse gap externamente."
+
+  top_3_recomendacoes:
+
+    recomendacao_1:
+      squad: "Creator-OS"
+      score_final: "94%"
+      titulo: "SEU SQUAD PRINCIPAL"
+      descricao: >
+        Creator-OS é onde você vai construir a Reduka em escala. Cursos,
+        mentorias em grupo, produtos digitais, metodologia proprietária.
+        Tudo que você já sabe fazer — organizado em um sistema escalável
+        que funciona sem sua presença em tempo integral.
+      por_que_voce:
+        - "CREATOR primário = você foi feito para criar produtos educacionais"
+        - "Quick Start 8 = você lança, itera e valida rápido (essencial em Creator-OS)"
+        - "Strategic+Ideation = você cria frameworks que outros não conseguem"
+        - "Communication = você sabe explicar complexo de forma simples (valor percebido alto)"
+        - "Reduka já é uma Creator-OS em estágio inicial — você não começa do zero"
+      proximos_passos_imediatos:
+        - "Documentar metodologia Reduka como produto replicável"
+        - "Criar oferta de R$5k-15k para o mercado de empreendedores em educação"
+        - "Usar V4 para marketing do produto criado"
+        - "Meta: 10 alunos premium antes de escalar para volume"
+      potencial_90_dias: "R$50k-80k com 5-10 clientes premium"
+      sinergia_com_negocio_atual: "Reduka evolui de startup para produto educacional premium estruturado"
+
+    recomendacao_2:
+      squad: "Dopamine Learning"
+      score_final: "82%"
+      titulo: "SEU SQUAD DE EXPANSÃO"
+      descricao: >
+        Dopamine Learning é o upgrade natural da Happy. Design de experiências
+        de aprendizagem gamificadas para crianças e jovens — exatamente o que
+        a Happy precisa para se diferenciar como franquia premium.
+      por_que_voce:
+        - "Você JÁ opera no mercado de educação infantil tecnológica"
+        - "Creator + Learner (Clifton) = você aprende design instrucional rápido"
+        - "Quick Start 6+ = você cria experiências e valida com alunos reais"
+        - "Happy tem laboratório vivo de 120+ alunos para testar"
+      proximos_passos_imediatos:
+        - "Mapear jornada de aprendizagem atual da Happy"
+        - "Identificar 3 pontos de gamificação de alto impacto"
+        - "Criar piloto com uma turma existente"
+      potencial_90_dias: "Diferencial competitivo para Happy + possível novo produto educacional"
+      sinergia_com_negocio_atual: "Happy se torna referência em metodologia, não apenas franquia"
+
+    recomendacao_3:
+      squad: "MentoriaEngine"
+      score_final: "77%"
+      titulo: "SEU SQUAD DE VISÃO DE FUTURO"
+      descricao: >
+        MentoriaEngine é o veículo para sua visão de conselheiro e investidor.
+        Motor de mentorias escaláveis que funciona sem sua presença constante —
+        você cria o framework, o squad entrega.
+      por_que_voce:
+        - "Visão declarada: conselheiro/advisor é o seu 'se dinheiro não importasse'"
+        - "Você já mentora alunos — MentoriaEngine é escalar isso com sistema"
+        - "Communication + Empathy (latente) = mentor nato"
+        - "Creator-OS alimenta MentoriaEngine: curso vira grupo vira mentoria"
+      proximos_passos_imediatos:
+        - "Começar após Creator-OS estar estruturado (6-12 meses)"
+        - "Usar alunos de Reduka como base inicial de mentoria"
+        - "Criar formato híbrido: grupo + individual premium"
+      potencial_12_meses: "R$15k-30k/mês em mentoria recorrente com 10-20 clientes"
+      sinergia_com_negocio_atual: "Evolução natural de educador para conselheiro estratégico"
+
+  dream_squad:
+    conceito: "O Ecossistema Completo de Antonio"
+    descricao: >
+      O Dream Squad de Antonio não é escolher um — é construir três em sequência,
+      com Creator-OS como fundação, Dopamine Learning como diferencial de produto,
+      e MentoriaEngine como topo da pirâmide de valor.
+    sequencia:
+      fase_1:
+        prazo: "0-6 meses"
+        squad: "Creator-OS"
+        foco: "Metodologia Reduka → produto digital premium → primeiros R$50k/mês"
+      fase_2:
+        prazo: "6-12 meses"
+        squad: "Dopamine Learning"
+        foco: "Happy evolui + novo produto educacional B2C"
+      fase_3:
+        prazo: "12-24 meses"
+        squad: "MentoriaEngine"
+        foco: "Conselheiro estratégico para empreendedores educacionais"
+    resultado_final: >
+      Em 24 meses: Antonio tem um ecossistema educacional com produto digital
+      (Creator-OS), metodologia própria para educação infantil (Dopamine Learning),
+      e programa de mentoria premium (MentoriaEngine) — aproximando cada vez mais
+      da visão de conselheiro e investidor com liberdade geográfica e de tempo.
+
+  next_step_imediato:
+    acao: "Abrir o Creator-OS e criar a oferta premium da Reduka"
+    prazo: "Esta semana"
+    especifico: >
+      Sentar por 2 horas e responder: 'Qual é a transformação específica que
+      um empreendedor no mercado de educação consegue em 90 dias com minha metodologia?'
+      Essa resposta é o produto. O ticket é R$5k-10k.
+    por_que_agora: >
+      Creator-OS não precisa de capital — precisa de clareza de oferta.
+      A restrição de crédito não bloqueia isso. Você começa HOJE.

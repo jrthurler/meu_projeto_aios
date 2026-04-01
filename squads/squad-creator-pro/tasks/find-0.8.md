@@ -2,6 +2,13 @@
 
 > **Pareto ao Cubo** | Identificar 0,8% genialidade, 4% excelência, 20% impacto, 80% merda
 
+**Task ID:** find-0.8
+**Version:** 1.1.0
+**Execution Type:** Agent (requires judgment to classify activities)
+**Model:** `Sonnet` (needs reasoning for activity classification)
+**Haiku Eligible:** NO — subjective assessment of "genialidade" vs "merda" requires interpretation
+**Orchestrator:** @squad-chief
+
 ## Objetivo
 
 Aplicar Pareto ao Cubo para mapear atividades/conhecimentos nas 4 zonas e priorizar o que realmente importa.
@@ -60,6 +67,17 @@ O que é um Resultado Lendário:
 
 ---
 
+## >>> CHECKPOINT INTEGRAL: Este task É o Pareto ao Cubo <<<
+
+```yaml
+checkpoint_pareto_integral:
+  consult: "MODELS.pareto_ao_cubo + OBSESSIONS.eficiencia_alavancagem_maxima"
+  question: "Apliquei o framework COMPLETO (4 testes + 3 níveis de leverage)?"
+  veto: "Task SEM framework completo = FAIL automático"
+  hierarchy: "ELIMINA (80%) → AUTOMATIZA (restante) → AMPLIFICA (0.8%)"
+  rationale: "Esta task É a implementação do modelo mental. Sem ele, não existe."
+```
+
 ## Checklist Lendário (Fluxo de Decisão)
 
 Aplique as perguntas EM ORDEM:
@@ -98,7 +116,7 @@ Aplique as perguntas EM ORDEM:
 - "Isso existe só por hábito ou tem um propósito real?"
 
 ### Perguntas de Automação
-- "Uma IA poderia fazer isso em segundos?"
+- "Trinity IA poderia fazer isso em segundos?"
 - "Existe um padrão repetitivo que poderia virar um processo automático?"
 - "Quanto tempo eu economizaria automatizando isso?"
 
@@ -218,5 +236,10 @@ A classificação depende de:
 - Sua capacidade de execução
 
 ---
+
+---
+
+_Task Version: 1.1.0_
+_Last Updated: 2026-02-11_
 
 *"0,8% produz 51% dos resultados. Proteja a genialidade, elimine a merda."*

@@ -2,6 +2,18 @@
 
 > **Extrator de Conhecimento Tácito** | Revelar o que foi decidido sem ser verbalizado
 
+**Execution Type:** Agent
+**Model:** Opus
+**Haiku Eligible:** NO
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-EIM-001 | A source corpus must be explicitly defined before extraction starts | Verify input includes at least one concrete source (book/aula/conversa/codigo/processo) and scope boundaries | VETO - BLOCK. Request explicit source corpus and scope before running extraction. |
+| VETO-EIM-002 | Existing extraction artifact must be backed up before overwrite | Check if target output file already exists and confirm backup path was created | VETO - BLOCK. Create backup snapshot before writing updated implicit-knowledge extraction. |
+| VETO-EIM-003 | Critical findings must be evidence-linked to source anchors | Verify each CRITICO/ALTO finding includes `[SOURCE: minuto/pagina]` reference before finalization | VETO - BLOCK. Reject report until evidence anchors are added for high-impact findings. |
+
 ## Objetivo
 
 Analisar **qualquer tipo de conteúdo** (livros, aulas, conversas, código, processos) para extrair conhecimento implícito: premissas não declaradas, heurísticas ocultas, pontos cegos estratégicos e decisões tomadas por omissão.
@@ -73,6 +85,24 @@ Esta task opera nos níveis **Analytical** e **Syntopical**.
 
 **O que revela:** Fundações invisíveis do projeto. Se erradas, tudo desmorona.
 
+#### >>> CHECKPOINTS: Clareza + Princípios fundamentais <<<
+
+```yaml
+checkpoint_clareza_premissa:
+  consult: "VALUES.clareza_radical"
+  question: "Premissa identificada é CLARA ou ainda nebulosa?"
+  if_clara: "Classificar impacto"
+  if_nebulosa: "Reformular até estar em 1 frase (Feynman)"
+  rationale: "Premissa nebulosa não é extração, é mais ruído."
+
+checkpoint_premissa_raiz:
+  consult: "MODELS.first_principles_thinking"
+  question: "Identifiquei as PREMISSAS por trás das premissas?"
+  if_raiz: "Premissas mapeadas até a base"
+  if_superficie: "Perguntar: 'O que precisa ser verdade para essa premissa existir?'"
+  rationale: "Premissa de superfície é fácil. Premissa raiz é onde mora o insight."
+```
+
 **Sinais no conteúdo:**
 - Frases com "obviamente", "claro que", "todo mundo sabe"
 - Ausência de justificativa para escolhas fundamentais
@@ -83,6 +113,17 @@ Esta task opera nos níveis **Analytical** e **Syntopical**.
 > "Quais regras de decisão ou atalhos mentais parecem estar guiando escolhas sem terem sido formalizados?"
 
 **O que revela:** Como decisões estão sendo tomadas na prática (vs. teoria).
+
+#### >>> CHECKPOINT: Formalização <<<
+
+```yaml
+checkpoint_formalizacao:
+  consult: "OBSESSIONS.clareza_compreensao_profunda"
+  question: "Heurística identificada tem formato SE/ENTÃO com trigger explícito?"
+  if_formalizada: "Formalizar como regra de decisão"
+  if_vaga: "Refinar até ter 'SE {trigger} → ENTÃO {ação}'"
+  rationale: "Heurística sem trigger = observação, não regra."
+```
 
 **Sinais no conteúdo:**
 - Padrões de "SE X, ENTÃO sempre Y"
@@ -112,6 +153,63 @@ Esta task opera nos níveis **Analytical** e **Syntopical**.
 - Escopo definido por subtração (o que ficou de fora)
 - Prioridades emergentes (o que é discutido primeiro/mais)
 
+### 5. Evasão Deliberada (Dito vs Evitado)
+> "O que o expert foi perguntado ou deveria abordar, mas DESVIOU, minimizou ou ignorou?"
+
+**O que revela:** Limites de competência, temas desconfortáveis, pontos cegos conscientes. O silêncio deliberado é tão informativo quanto a fala.
+
+#### >>> CHECKPOINT: Evasão vs Limitação de escopo <<<
+
+```yaml
+checkpoint_evasao:
+  consult: "MODELS.first_principles_thinking"
+  question: "Expert EVITOU o tema (desconforto/incompetência) ou DELIMITOU escopo (legítimo)?"
+  if_evasao: "Documentar como ponto cego potencial — triangular com outras fontes"
+  if_escopo: "Documentar como limitação declarada — não é evasão"
+  rationale: "Evasão é sinal. Escopo é escolha. Distinguir os dois evita falsos positivos."
+```
+
+#### >>> ADVERSARIAL: Steel Man a evasão <<<
+
+```yaml
+adversarial_evasion:
+  consult: "PARADOXES.humble_expert"
+  steel_man: "Qual a interpretação MAIS GENEROSA? Talvez o expert tenha razões legítimas (tempo, audiência, escopo)."
+  attack: "E se é limitação REAL de tempo, não de competência? E se o expert aborda isso em OUTRA fonte?"
+  test: "Mesma evasão aparece em 3+ fontes diferentes (contextos, tempos, entrevistadores diferentes)?"
+  survive_criteria:
+    - "Evasão se repete em múltiplos contextos (padrão, não incidente)"
+    - "Evasão é em tema CENTRAL do expertise declarado (não periférico)"
+    - "Não existe outra fonte onde expert aborda o tema com profundidade"
+  rationale: "Uma evasão = pode ser contexto. Três evasões = padrão real. Projetar fragilidade onde não existe = erro do extrator."
+```
+
+**Sinais de evasão no conteúdo:**
+- Resposta genérica a pergunta específica
+- Mudança de assunto após pergunta direta
+- "Isso é muito complexo para discutir agora" (sem nunca retomar)
+- Resposta com exemplo em vez de framework (distração pelo concreto)
+- Humor ou ironia para desviar de tema sensível
+- Qualificar excessivamente: "depende", "é relativo" sem dar o framework de decisão
+
+**Diferença de outros eixos:**
+- Premissa Oculta = expert NÃO PERCEBE que assume
+- Evasão Deliberada = expert PERCEBE mas NÃO ABORDA
+- Ponto Cego = expert NÃO PERCEBE que ignora
+- Evasão pode ser CONSCIENTE (fragilidade) ou HABITUAL (padrão de proteção)
+
+**Como documentar:**
+```yaml
+evasion_scan:
+  - id: "EV-001"
+    tema_evitado: "{o que deveria ter sido abordado}"
+    sinal_de_evasao: "{como desviou — mudou de assunto? generalizou? usou humor?}"
+    evidence: "{trecho que mostra o desvio}" # [SOURCE: minuto/página]
+    tipo: "CONSCIOUS / HABITUAL / SCOPE_LIMIT"
+    implicacao: "{o que isso revela sobre os limites do expert}"
+    triangulacao: "{outras fontes confirmam o padrão?}"
+```
+
 ---
 
 ## Processo de Extração
@@ -130,6 +228,18 @@ Para cada ponto identificado:
 4. **Pergunta:** O que deveríamos perguntar para resolver?
 
 ### Fase 3: Priorização
+
+#### >>> CHECKPOINT: Pareto ao Cubo na priorização <<<
+
+```yaml
+checkpoint_pareto_priorizacao:
+  consult: "MODELS.pareto_ao_cubo"
+  question: "Top 5 críticos segue lógica Pareto (impacto exponencial primeiro)?"
+  if_pareto: "Priorização válida"
+  if_linear: "Reordenar: CRÍTICO que desbloqueia outros primeiro"
+  rationale: "Priorizar pelo impacto exponencial, não pelo mais fácil."
+```
+
 Ordenar por:
 1. Impacto se continuar invisível (CRÍTICO primeiro)
 2. Facilidade de resolver (quick wins)
@@ -203,17 +313,32 @@ Ordenar por:
 
 ---
 
+## 5. Evasão Deliberada
+
+### EV1: {tema evitado}
+- **O que deveria ter sido abordado:** {descrição}
+- **Sinal de evasão:** {como desviou — generalizou? mudou de assunto? usou humor?}
+- **Evidência:** "{trecho que mostra o desvio}" [SOURCE: {minuto/página}]
+- **Tipo:** [CONSCIOUS / HABITUAL / SCOPE_LIMIT]
+- **Implicação:** {o que revela sobre os limites do expert}
+- **Triangulação:** {outras fontes confirmam o padrão?}
+
+### EV2: {tema evitado}
+...
+
+---
+
 ## Síntese Executiva
 
 ### Top 5 Itens Críticos (ordenados por impacto)
 
 | # | Tipo | Item | Impacto | Pergunta-Chave |
 |---|------|------|---------|----------------|
-| 1 | {P/H/PC/D} | {nome} | CRÍTICO | "{pergunta}" |
-| 2 | {P/H/PC/D} | {nome} | CRÍTICO | "{pergunta}" |
-| 3 | {P/H/PC/D} | {nome} | ALTO | "{pergunta}" |
-| 4 | {P/H/PC/D} | {nome} | ALTO | "{pergunta}" |
-| 5 | {P/H/PC/D} | {nome} | ALTO | "{pergunta}" |
+| 1 | {P/H/PC/D/EV} | {nome} | CRÍTICO | "{pergunta}" |
+| 2 | {P/H/PC/D/EV} | {nome} | CRÍTICO | "{pergunta}" |
+| 3 | {P/H/PC/D/EV} | {nome} | ALTO | "{pergunta}" |
+| 4 | {P/H/PC/D/EV} | {nome} | ALTO | "{pergunta}" |
+| 5 | {P/H/PC/D/EV} | {nome} | ALTO | "{pergunta}" |
 
 ### Padrões Meta-Observados
 - {padrão 1 - ex: "Tendência a assumir recursos ilimitados"}
@@ -224,6 +349,24 @@ Ordenar por:
 1. {ação imediata para item mais crítico}
 2. {ação para desbloquear outros}
 3. {ação de prevenção futura}
+
+---
+
+## Clone Guardrails (gerado automaticamente das evasões)
+
+### Guardrails de Confiança
+Regras ativas para o clone baseadas nos limites detectados do expert.
+
+| # | Tema | Nível de Confiança do Clone | Regra |
+|---|------|-----------------------------|-------|
+| G1 | {tema onde expert é forte} | ALTA | Responder com frameworks e [SOURCE:] |
+| G2 | {tema onde expert evade} | BAIXA | Responder com "Isso está fora da minha área principal. Recomendo consultar [X]." |
+| G3 | {tema com evasão HABITUAL} | MÉDIA | Responder com ressalvas: "Minha experiência aqui é limitada, mas..." |
+
+### Regras de Boundary
+- SE perguntado sobre {tema_evitado_1} → ENTÃO sinalizar limite de competência
+- SE perguntado sobre {tema_evitado_2} → ENTÃO redirecionar para área de força
+- SE insistir em tema evitado → ENTÃO NÃO inventar — admitir limite
 ```
 
 ---
@@ -239,8 +382,10 @@ Ordenar por:
 > 2. Heurísticas ocultas
 > 3. Pontos cegos estratégicos
 > 4. Decisões implícitas
+> 5. Evasões deliberadas (o que foi evitado/minimizado)
 >
-> Para cada item: evidência, impacto, pergunta para resolver."
+> Para cada item: evidência, impacto, pergunta para resolver.
+> Para evasões: gerar guardrails de confiança para o clone."
 
 ---
 
@@ -270,18 +415,28 @@ Ordenar por:
 - Primeira opção = opção final
 - Discussão desbalanceada (80% em um tópico)
 
+### Sinais de Evasão Deliberada
+- Resposta genérica a pergunta específica
+- Mudança de assunto após pergunta direta
+- "Depende" sem dar o framework de decisão
+- Humor/ironia para desviar de tema sensível
+- "Isso é complexo" sem nunca aprofundar
+- Exemplo concreto no lugar de framework (distração)
+
 ---
 
 ## Completion Criteria
 
 | Critério | Status |
 |----------|--------|
-| 4 eixos analisados (P, H, PC, D) | [ ] |
+| 5 eixos analisados (P, H, PC, D, EV) | [ ] |
 | Cada item com [SOURCE:] ou justificativa de ausência | [ ] |
 | Impacto classificado (CRÍTICO/ALTO/MÉDIO) | [ ] |
 | Pergunta-chave para cada item | [ ] |
 | Top 5 priorizado | [ ] |
 | Síntese executiva completa | [ ] |
+| Clone Guardrails gerados a partir das evasões | [ ] |
+| Adversarial Stress Test aplicado nas evasões | [ ] |
 
 ---
 
@@ -310,6 +465,17 @@ Antes de criar qualquer framework de extração, pergunte:
 
 ### 1. "Quem já faz isso bem?"
 > Existe alguém que comprovadamente faz esta extração com um framework documentado?
+
+#### >>> CHECKPOINT: Humildade antes de criar <<<
+
+```yaml
+checkpoint_humble_meta:
+  consult: "PARADOXES.humble_expert"
+  question: "Perguntei 'Quem já faz isso bem?' ANTES de criar framework próprio?"
+  if_pesquisou: "Pesquisou referências antes de inventar"
+  if_inventou: "PARAR e pesquisar frameworks existentes primeiro"
+  rationale: "Expert em processo: sabe COMO extrair. Humilde: não assume que sabe TUDO."
+```
 
 **Por que importa:** Reinventar a roda é desperdício. Frameworks validados > intuição.
 

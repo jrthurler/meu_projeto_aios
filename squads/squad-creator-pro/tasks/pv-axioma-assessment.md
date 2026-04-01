@@ -2,6 +2,10 @@
 
 > Pedro Valério | Loaded on-demand when `*axioma-assessment {process}` is invoked
 
+**Execution Type:** Agent
+**Model:** Opus
+**Haiku Eligible:** NO
+
 ## Purpose
 
 Avaliar processo/sistema nas 10 dimensões de Meta-Axiomas de Pedro Valério
@@ -74,6 +78,39 @@ axioma_assessment:
 - Minimum per dimension: 6.0
 - Verdade < 7.0 → VETO regardless of overall score
 - Status: PASS (>= 7.0) | FAIL (< 7.0 or VETO) | REVIEW (borderline)
+
+## Scoring Calibration (CRITICAL)
+
+**Princípio:** Score o que EXISTE, não o que FALTA. Gaps são para recommendations, não para penalizar score.
+
+| Score | Significado | Quando usar |
+|-------|-------------|-------------|
+| 9-10 | Excelente | Dimensão bem implementada, evidência clara |
+| 7-8 | Bom | Dimensão presente e funcional, gaps menores |
+| 5-6 | Adequado | Dimensão existe mas com limitações significativas |
+| 3-4 | Fraco | Dimensão parcialmente atendida |
+| 0-2 | Ausente | Dimensão não implementada ou falha crítica |
+
+**Regras de Calibração:**
+
+1. **Se o processo TEM a característica → mínimo 7.0**
+   - Exemplo: "Tem fallbacks definidos" → Gestão de Riscos >= 7.0
+
+2. **Gaps vão para recommendations, não reduzem score**
+   - ERRADO: "Tem X mas falta Y → score 6.5"
+   - CERTO: "Tem X → score 8.0. Recommendation: adicionar Y"
+
+3. **Inovação = fazer diferente do padrão**
+   - Se resolve problema de forma não-óbvia → score >= 7.0
+   - Não exigir que seja "revolucionário" para score alto
+
+4. **Sustentabilidade = funciona sem intervenção manual**
+   - Se outputs são persistidos e reutilizáveis → score >= 7.0
+   - "Poderia ter mais" não reduz score se já funciona
+
+5. **Evidence deve ser POSITIVA primeiro**
+   - Liste o que o processo FAZ bem
+   - Gaps são secundários e vão para recommendations
 
 ## Completion Criteria
 

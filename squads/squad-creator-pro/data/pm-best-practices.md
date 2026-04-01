@@ -1,6 +1,6 @@
 # PM Best Practices for Squad Creation
 
-> **Source:** Extracted from AIOS PM Agent (Morgan)
+> **Source:** Extracted from AIOX PM Agent (Niobe)
 > **Purpose:** Guide PRD/Epic creation when squad scope >= 10 workflows
 > **Version:** 1.0.0
 
@@ -436,5 +436,5 @@ example_prd:
 ---
 
 *PM Best Practices for Squad Creator v1.0*
-*Source: AIOS PM Agent (Morgan)*
+*Source: AIOX PM Agent (Niobe)*
 *Integrated: 2026-02-03*

@@ -2,7 +2,7 @@
 # modernization-score.sh - Deterministic modernization scoring (no LLM needed)
 # Usage: ./modernization-score.sh <workflow-file> [--json]
 #
-# Applies 12-point checklist to evaluate if workflow follows modern AIOS patterns
+# Applies 12-point checklist to evaluate if workflow follows modern AIOX patterns
 # Based on pv-workflow-validation.yaml criteria
 
 set -e
@@ -17,7 +17,7 @@ fi
 if [[ -z "$WORKFLOW_FILE" ]]; then
     echo "Usage: $0 <workflow-file> [--json]"
     echo ""
-    echo "Evaluates a workflow/skill file against 12 modern AIOS patterns."
+    echo "Evaluates a workflow/skill file against 12 modern AIOX patterns."
     echo "Returns score X/12 with per-pattern evidence."
     exit 1
 fi

@@ -2,7 +2,7 @@
 # Workflow para qualificar modelos EXTERNOS (Kimi K2.5, GLM-5, etc) vs Opus
 # Version: 1.0
 # Created: 2026-02-12
-# Author: @architect (Aria)
+# Author: @architect (The Architect)
 
 workflow:
   id: wf-cross-provider-qualification

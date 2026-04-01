@@ -11,10 +11,12 @@ workflow:
 
     - phase: architecture
       task: create-squad
-      notes: "Use detected context and merged discovery as mandatory inputs"
+      notes: "Use detected context and merged discovery as mandatory inputs; classify workspace integration level and contract"
       requires:
         - outputs/squad_creation/{squad_name}/context-detection.yaml
         - outputs/discovery/{domain}/discovery-merged.yaml
+      outputs:
+        - outputs/squad_creation/{squad_name}/workspace-integration-level.yaml
 
     - phase: creation
       task: create-agent
@@ -38,10 +40,17 @@ workflow:
       phase: architecture
       decision: APPROVE_ARCHITECTURE
 
+    - id: CP_WORKSPACE
+      phase: architecture
+      decision: WORKSPACE_CONTRACT_VALID
+
     - id: CP_FINAL
       phase: quality-final-artifacts
       decision: PASS_OR_REVISE
 
   outputs:
     - squads/{squad_name}/
+    - .claude/commands/{slash_prefix}/agents/{entry_agent}.md
+    - .codex/skills/{entry_agent}/SKILL.md
+    - outputs/squad_creation/{squad_name}/workspace-integration-level.yaml
     - outputs/squad_creation/{squad_name}/creation-report.yaml

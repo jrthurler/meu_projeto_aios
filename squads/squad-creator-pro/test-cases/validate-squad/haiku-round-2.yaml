@@ -253,14 +253,14 @@ recommendations:
     - issue: "No execution_type field in tasks"
       impact: "Cannot perform cost optimization analysis"
       fix: "Add execution_type: Worker|Agent|Hybrid|Human to each task definition in tasks/ files"
-      file_references: "/Users/oalanicolas/Code/mmos/squads/copy/tasks/*.md"
+      file_references: "<workspace-root>/squads/copy/tasks/*.md"
       priority: "HIGH - blocking optimization analysis"
 
   medium:
     - issue: "Standalone CHANGELOG.md missing"
       impact: "Version history is in config.yaml comments, not easily discoverable"
       fix: "Extract version history from config.yaml (lines 14-50) to CHANGELOG.md following semantic versioning format"
-      file_references: "/Users/oalanicolas/Code/mmos/squads/copy/config.yaml"
+      file_references: "<workspace-root>/squads/copy/config.yaml"
 
     - issue: "Prompt quality variability"
       impact: "Some tasks lack clear examples (create-daily-email: 4/10)"
@@ -280,17 +280,17 @@ recommendations:
 
 validation_metadata:
   validator_version: "3.3.0"
-  task_file: "/Users/oalanicolas/Code/mmos/squads/squad-creator-pro/tasks/validate-squad.md"
-  squad_path: "/Users/oalanicolas/Code/mmos/squads/copy"
+  task_file: "<workspace-root>/squads/squad-creator/tasks/validate-squad.md"
+  squad_path: "<workspace-root>/squads/copy"
   validation_date: "2026-02-11"
   model: "haiku"
   duration_seconds: "estimated 600-900"
 
   files_analyzed:
-    config_yaml: "/Users/oalanicolas/Code/mmos/squads/copy/config.yaml"
-    agents_directory: "/Users/oalanicolas/Code/mmos/squads/copy/agents/ (24 files)"
-    tasks_directory: "/Users/oalanicolas/Code/mmos/squads/copy/tasks/ (75 files)"
-    checklists_directory: "/Users/oalanicolas/Code/mmos/squads/copy/checklists/ (55 files)"
+    config_yaml: "<workspace-root>/squads/copy/config.yaml"
+    agents_directory: "<workspace-root>/squads/copy/agents/ (24 files)"
+    tasks_directory: "<workspace-root>/squads/copy/tasks/ (75 files)"
+    checklists_directory: "<workspace-root>/squads/copy/checklists/ (55 files)"
     documentation: "README.md, ARCHITECTURE.md"
 
   phase_summary:

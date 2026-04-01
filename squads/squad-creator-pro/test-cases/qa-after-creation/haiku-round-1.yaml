@@ -285,8 +285,8 @@ qa_report:
     phases_failed: 0
     
     validation_timestamp: "2026-02-11T00:00:00Z"
-    component_path: "/Users/oalanicolas/Code/mmos/squads/copy"
+    component_path: "<workspace-root>/squads/copy"
     component_version: "4.0.0"
     
-    checklist_reference: "squads/squad-creator-pro/checklists/squad-checklist.md"
+    checklist_reference: "squads/squad-creator/checklists/squad-checklist.md"
     scoring_reference: "squads/squad-creator-pro/config/scoring-rubric.yaml"

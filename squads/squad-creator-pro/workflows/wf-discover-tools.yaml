@@ -1,7 +1,7 @@
 # wf-discover-tools.yaml
 # Workflow: Deep Tool Discovery with Parallel Sub-Agents
-# Version: 2.0
-# Last Updated: 2026-02-03
+# Version: 3.0
+# Last Updated: 2026-02-19
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # WORKFLOW METADATA
@@ -10,7 +10,7 @@
 workflow:
   id: wf-discover-tools
   name: "Deep Tool Discovery"
-  version: "2.0"
+  version: "3.0"
   purpose: |
     Orquestrar pesquisa PROFUNDA e PARALELA de ferramentas que potencializam
     os entregáveis de um squad, usando subagentes especializados para cada
@@ -19,11 +19,13 @@ workflow:
   mode: "autonomous"
 
   philosophy: |
+    "INTERNAL-FIRST: use what AIOX already has before searching outside."
+
     "A squad should leverage ALL available tools to deliver maximum value
     with minimum user intervention."
 
     Este workflow NÃO é um check superficial - é uma pesquisa PROFUNDA
-    que lança 5 subagentes em PARALELO, cada um especializado em uma
+    que lança 6 subagentes em PARALELO, cada um especializado em uma
     categoria de ferramenta.
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -33,19 +35,22 @@ workflow:
 execution_strategy:
   mode: "parallel_then_synthesize"
   description: |
-    1. PHASE 0: Capability Gap Analysis (sequential, fast)
-    2. PHASE 1: Deep Search (5 subagents in PARALLEL)
+    1. PHASE -2: Domain Context Validation (sequential, mandatory)
+    2. PHASE -1: Internal Infrastructure Discovery (sequential, mandatory)
+    3. PHASE 0: Capability Gap Analysis + Local Skills/Squads Scan (sequential, fast)
+    4. PHASE 1: Deep Search (6 subagents in PARALLEL, external-only gaps)
        - MCP Discovery Agent
        - API Discovery Agent
        - CLI Discovery Agent
        - Library Discovery Agent
        - GitHub Project Discovery Agent
-    3. PHASE 2: Synthesis & Scoring (sequential, after all agents complete)
-    4. PHASE 3: Decision Matrix & Integration Plan
+       - Skill Discovery Agent
+    5. PHASE 2: Synthesis & Scoring (sequential, after all agents complete)
+    6. PHASE 3: Decision Matrix & Integration Plan
 
   parallelization:
     enabled: true
-    max_concurrent_agents: 5
+    max_concurrent_agents: 6
     timeout_per_agent: "15 minutes"
     fail_strategy: "continue_others"  # Don't block if one agent fails
 
@@ -96,6 +101,8 @@ inputs:
 
 preconditions:
   - "squad-chief agent is active"
+  - "domain scope validated from canonical artifacts (no name-only inference)"
+  - "data/internal-infrastructure-library.yaml exists"
   - "WebSearch/EXA tool available"
   - "WebFetch tool available"
   - "Task tool available (for spawning subagents)"
@@ -107,6 +114,141 @@ preconditions:
 
 phases:
   # ─────────────────────────────────────────────────────────────────────────────
+  # PHASE -2: DOMAIN CONTEXT VALIDATION (MANDATORY)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - id: phase_minus_2
+    name: "DOMAIN CONTEXT VALIDATION"
+    purpose: "Resolve real domain scope from canonical artifacts before any discovery"
+    duration: "2-6 minutes"
+    mode: "sequential"
+
+    steps:
+      - id: step_m2_1
+        name: "Resolve Canonical Scope"
+        action: "Load canonical files for the requested domain/squad and extract explicit purpose"
+        logic: |
+          canonical_sources_priority:
+            - squads/{domain}/squad.yaml
+            - squads/{domain}/config.yaml
+            - squads/{domain}/README.md
+            - {registry_path}
+            - related tasks/workflows/agents
+
+          rules:
+            - never infer scope from domain name/slug alone
+            - extract explicit domain + purpose + use_cases statements
+            - mark missing/conflicting evidence
+
+      - id: step_m2_2
+        name: "Build Evidence Pack"
+        action: "Create canonical evidence with status and contradiction log"
+        logic: |
+          canonical_scope:
+            declared_domain: ""
+            declared_purpose: ""
+            evidence:
+              - path: ""
+                status: "implemented|partial|concept"
+                extracted_scope: ""
+            contradictions: []
+            confidence: "high|medium|low"
+
+      - id: step_m2_3
+        name: "Apply Ambiguity Gate"
+        action: "Block discovery when scope is unresolved or inferred by name"
+        logic: |
+          fail_when:
+            - no explicit purpose in canonical files
+            - conflicting canonical sources
+            - confidence == low
+            - scope came from name-only inference
+
+          on_fail:
+            - halt external discovery
+            - request user clarification with explicit options
+
+        output:
+          scope_validation:
+            status: "verified|partial|unverified"
+            requires_clarification: true/false
+            evidence_paths: []
+            contradictions: []
+
+    checkpoint:
+      id: CP_DOMAIN_INTENT
+      name: "Domain Context Validation Gate"
+      blocking: true
+      criteria:
+        - scope_validation_status: "verified"
+        - name_only_inference_used: false
+        - contradictions_resolved_or_logged: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PHASE -1: INTERNAL INFRASTRUCTURE DISCOVERY (MANDATORY)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - id: phase_minus_1
+    name: "INTERNAL INFRASTRUCTURE DISCOVERY"
+    purpose: "Map internal capabilities first and constrain external search scope"
+    duration: "3-8 minutes"
+    mode: "sequential"
+    depends_on: ["phase_minus_2"]
+
+    steps:
+      - id: step_m1_1
+        name: "Load Internal Library"
+        action: "Read data/internal-infrastructure-library.yaml"
+        logic: |
+          load: "data/internal-infrastructure-library.yaml"
+          assert_exists:
+            - internal_assets
+            - decision_policy
+            - output_contract
+
+      - id: step_m1_2
+        name: "Map Internal Coverage"
+        action: "Match required capabilities against internal assets"
+        logic: |
+          for each use_case in inputs.use_cases:
+            derive required_capabilities
+
+          for each capability in required_capabilities:
+            match against internal_assets[].provides[].capability
+
+            classify:
+              - INTERNAL_COVERED
+              - INTERNAL_PARTIAL
+              - INTERNAL_GAP
+
+        output:
+          internal_coverage:
+            covered: []
+            partial: []
+            gaps: []
+
+      - id: step_m1_3
+        name: "Define External-Only Scope"
+        action: "Prepare external search list based on true internal gaps"
+        logic: |
+          external_search_scope.required = internal_coverage.gaps
+          external_search_scope.optional = internal_coverage.partial
+          external_search_scope.excluded = internal_coverage.covered
+
+        output:
+          external_search_scope:
+            required: []
+            optional: []
+            excluded: []
+
+    checkpoint:
+      id: CP_INTERNAL_FIRST
+      name: "Internal Coverage Gate"
+      blocking: true
+      criteria:
+        - internal_library_loaded: true
+        - internal_coverage_mapped: true
+        - external_scope_defined: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
   # PHASE 0: CAPABILITY GAP ANALYSIS
   # ─────────────────────────────────────────────────────────────────────────────
   - id: phase_0
@@ -114,6 +256,7 @@ phases:
     purpose: "Map required capabilities and identify gaps that need tools"
     duration: "5-10 minutes"
     mode: "sequential"
+    depends_on: ["phase_minus_1"]
 
     steps:
       - id: step_0_1
@@ -140,6 +283,7 @@ phases:
         name: "Check Existing Coverage"
         action: "Load tool-registry.yaml and check what's already covered"
         logic: |
+          load: "data/internal-infrastructure-library.yaml"
           load: "data/tool-registry.yaml"
 
           for each capability in capability_requirements:
@@ -149,6 +293,8 @@ phases:
               - known_mcp_coverage
 
             classify:
+              - INTERNAL_COVERED: Internal tool exists and is ready
+              - INTERNAL_PARTIAL: Internal tool exists but with limitations
               - COVERED: Tool exists and is installed
               - KNOWN: Tool exists but not installed
               - GAP: No known tool for this capability
@@ -159,9 +305,65 @@ phases:
             known_not_installed: []
             gaps: []  # These go to deep search
 
+      - id: step_0_2b
+        name: "Scan Local Skills & Squads"
+        action: "Scan existing skills and squad capabilities for domain coverage"
+        logic: |
+          # 1. Scan project-level skills
+          scan: ".claude/skills/*/SKILL.md"
+          for each skill:
+            extract:
+              - name (from frontmatter)
+              - description (from frontmatter)
+              - capabilities (inferred from description + body)
+              - agent (if skill delegates to specific agent)
+              - tools_used (allowed-tools from frontmatter)
+
+            match_against: capability_requirements
+            classify:
+              - COVERS: Skill directly solves this capability
+              - ADAPTABLE: Skill partially covers, can be forked/extended
+              - UNRELATED: No match
+
+          # 2. Scan squad capabilities
+          scan: "squads/*/config.yaml"
+          for each squad:
+            extract:
+              - domain
+              - agents (names + specialties)
+              - tasks (names + purposes)
+              - workflows (names + purposes)
+              - skills (if any embedded)
+
+            match_against: capability_requirements
+            classify:
+              - REUSABLE: Squad component directly applicable
+              - ADAPTABLE: Component can be modified for this domain
+              - UNRELATED: Different domain, no overlap
+
+          # 3. Scan global skills
+          scan: "~/.claude/skills/*/SKILL.md"
+          for each skill:
+            same extraction and matching as project skills
+
+        output:
+          local_skills_coverage:
+            skills_scanned: N
+            squads_scanned: N
+            covers:
+              - capability: "web_research"
+                covered_by:
+                  - { type: "skill", name: "tech-search", path: ".claude/skills/tech-search/SKILL.md" }
+            adaptable:
+              - capability: "competitor_analysis"
+                adaptable_from:
+                  - { type: "squad", name: "spy", component: "deep-research task", effort: "low" }
+            gaps: []  # Capabilities with no skill/squad coverage
+
       - id: step_0_3
         name: "Prioritize Gaps"
         action: "Score and prioritize capability gaps for deep search"
+        note: "Only prioritize INTERNAL_GAP and justified INTERNAL_PARTIAL capabilities"
         scoring:
           impact:
             weight: 0.35
@@ -191,22 +393,25 @@ phases:
       blocking: true
       criteria:
         - capabilities_mapped: true
+        - local_skills_scanned: true
+        - local_squads_scanned: true
         - gaps_identified: ">= 1"
         - gaps_prioritized: true
+        - skills_coverage_report_generated: true
 
   # ─────────────────────────────────────────────────────────────────────────────
   # PHASE 1: PARALLEL DEEP SEARCH
   # ─────────────────────────────────────────────────────────────────────────────
   - id: phase_1
     name: "PARALLEL DEEP SEARCH"
-    purpose: "Launch 5 specialized subagents to search each tool category"
+    purpose: "Launch 6 specialized subagents to search each tool category for external-only gaps"
     duration: "10-20 minutes (parallel)"
     mode: "parallel"
 
     description: |
-      This phase launches 5 subagents SIMULTANEOUSLY using the Task tool.
+      This phase launches 6 subagents SIMULTANEOUSLY using the Task tool.
       Each subagent is specialized in searching one category of tools.
-      All agents receive the same inputs (domain, gaps, keywords) but
+      All agents receive the same inputs (domain, external-only gaps, keywords) but
       search in different ecosystems.
 
     parallel_agents:
@@ -603,6 +808,98 @@ phases:
         timeout: "{search_timeout}"
         output_key: "github_results"
 
+      # ─────────────────────────────────────────────────────────────────────────
+      # AGENT 6: SKILL DISCOVERY
+      # ─────────────────────────────────────────────────────────────────────────
+      - id: agent_skill
+        name: "Skill Discovery Agent"
+        task_prompt: |
+          You are a specialized AI Skill & Prompt discovery agent.
+
+          ## Your Mission
+          Find reusable AI skills, prompt templates, agent frameworks, and workflow
+          patterns that can fill these capability gaps for a {domain} squad:
+          {prioritized_gaps}
+
+          IMPORTANT: The local skills scan (Phase 0) already identified these
+          LOCAL coverages: {local_skills_coverage}
+          Focus your search on EXTERNAL/COMMUNITY sources that ADD to local coverage.
+
+          ## Search Strategy
+
+          ### 1. Claude Code / Anthropic Ecosystem
+          - GitHub: "claude code skills" OR "claude skills" OR ".claude/skills"
+          - GitHub: "claude agent" OR "claude code agent" OR ".claude/agents"
+          - GitHub topic: "claude-code", "anthropic-tools", "claude-agent"
+
+          ### 2. AI Agent Framework Skills
+          - LangChain Hub: https://smith.langchain.com/hub
+          - CrewAI: https://github.com/crewAIInc/crewAI
+          - AutoGen: https://github.com/microsoft/autogen
+          - Semantic Kernel: https://github.com/microsoft/semantic-kernel
+          - GitHub: "awesome ai agents {domain}"
+          - GitHub: "ai agent {domain} prompt"
+
+          ### 3. Prompt Libraries & Templates
+          - PromptBase: https://promptbase.com
+          - FlowGPT: https://flowgpt.com
+          - PromptHero: https://prompthero.com
+          - GitHub: "awesome prompts {domain}"
+          - GitHub: "system prompt {domain}"
+
+          ### 4. Workflow & Automation Patterns
+          - GitHub: "{domain} automation workflow"
+          - GitHub: "ai workflow {domain}"
+          - n8n templates: https://n8n.io/workflows
+
+          ### 5. Filter Criteria
+          - Has clear documentation or README
+          - Reusable (not one-off personal projects)
+          - Domain-relevant or easily adaptable
+          - Active maintenance preferred but not required
+          - License allows adaptation (MIT, Apache, CC-BY preferred)
+
+          ## For Each Skill/Prompt Found, Extract:
+          ```yaml
+          skill:
+            name: ""
+            source_url: ""
+            source_type: "claude_skill | agent_framework | prompt_library | workflow_template"
+            description: ""
+            capabilities: []
+            domain_fit:
+              relevance: "direct | adaptable | inspirational"
+              adaptation_effort: "none | low | medium | high"
+            technical:
+              format: "markdown | yaml | python | json"
+              framework: "claude_code | langchain | crewai | autogen | standalone"
+              dependencies: []
+              self_contained: true/false
+            quality:
+              has_documentation: true/false
+              has_examples: true/false
+              community_usage: "N stars/downloads/forks"
+            reusability:
+              can_fork: true/false
+              can_import: true/false
+              prompt_extractable: true/false
+              workflow_extractable: true/false
+            fills_gaps: []
+          ```
+
+          ## Output Format
+          Return a YAML list of all skills found, sorted by:
+          1. Direct domain relevance
+          2. Adaptation effort (lower is better)
+          3. Quality signals
+          4. Self-contained preference
+
+          Include at least {search_depth_count} results.
+
+        subagent_type: "Explore"
+        timeout: "{search_timeout}"
+        output_key: "skill_results"
+
     # Agent execution logic
     execution:
       launch_all_parallel: true
@@ -613,13 +910,14 @@ phases:
         - cli_results
         - library_results
         - github_results
+        - skill_results
 
     checkpoint:
       id: CP_DEEP_SEARCH
       name: "Deep Search Complete"
       blocking: true
       criteria:
-        - at_least_3_agents_succeeded: true
+        - at_least_4_agents_succeeded: true
         - total_tools_found: ">= 10"
       on_partial_failure:
         action: "Continue with available results, note failures"
@@ -654,21 +952,27 @@ phases:
     steps:
       - id: step_2_1
         name: "Consolidate & Deduplicate"
-        action: "Merge all subagent results and remove duplicates"
+        action: "Merge all subagent results (including skills) and local scan, remove duplicates"
         logic: |
           all_tools = []
-          for category in [mcp, api, cli, library, github]:
+          for category in [mcp, api, cli, library, github, skill]:
             for tool in category_results:
               tool.category = category
               tool.source_agent = agent_name
               all_tools.append(tool)
+
+          # Add local skills from Phase 0 scan
+          for local_skill in local_skills_coverage.covers + local_skills_coverage.adaptable:
+            local_skill.category = "local_skill"
+            local_skill.source_agent = "local_scan"
+            all_tools.append(local_skill)
 
           deduplicated = deduplicate_by_name_and_url(all_tools)
 
         output:
           consolidated_tools:
             total: N
-            by_category: { mcp: N, api: N, cli: N, library: N, github: N }
+            by_category: { mcp: N, api: N, cli: N, library: N, github: N, skill: N, local_skill: N }
 
       # ─────────────────────────────────────────────────────────────────────────
       # STEP 2.2: COLLECT RAW METRICS
@@ -859,7 +1163,7 @@ phases:
               capability_name:
                 oss_options: [{ tool, tier, cost: "free" }]
                 paid_options: [{ tool, tier, cost: "$X/mo" }]
-                recommendation: "OSS Tier 1 exists" | "Consider paid" | "Only paid available"
+                recommendation: 'OSS Tier 1 exists | Consider paid | Only paid available'
 
       # ─────────────────────────────────────────────────────────────────────────
       # STEP 2.6: RICE SCORING (Relative)
@@ -1150,6 +1454,7 @@ phases:
       - id: step_3_3
         name: "Update Tool Registry"
         action: "Add discovered tools to global registry"
+        policy: "internal-first"
         updates:
           - add_to: "mcp_servers"
             status: "discovered"
@@ -1159,14 +1464,29 @@ phases:
             essential: "{quick_wins}"
             recommended: "{strategic}"
             optional: "{fill_ins}"
+            constraints:
+              - "if capability is internal-covered, keep internal tool as primary"
+              - "external tools for internal-covered capabilities must be fallback/enhancement"
+
+          - add_to: "domain_recommendations.{domain}.skills"
+            reusable_local: "{local_skills_that_cover}"
+            adaptable_local: "{local_skills_adaptable}"
+            community: "{community_skills_recommended}"
 
           - add_to: "capability_mapping"
             new_mappings: "{gap_to_tool_mappings}"
+
+          - add_to: "skill_recommendations.{domain}"
+            local_skills: "{matched_local_skills}"
+            community_skills: "{matched_community_skills}"
+            fork_candidates: "{skills_to_fork}"
 
         output:
           registry_updates:
             mcps_added: N
             apis_added: N
+            skills_matched: N
+            skills_to_fork: N
             mappings_added: N
 
       - id: step_3_4
@@ -1174,9 +1494,11 @@ phases:
         action: "Create comprehensive documentation"
         reports:
           - name: "Tool Discovery Report"
-            location: "squads/{pack_name}/docs/tool-discovery-report.md"
+            location: "squads/{squad_name}/docs/tool-discovery-report.md"
             sections:
               - executive_summary
+              - internal_coverage_summary
+              - external_search_scope
               - capability_gaps_analyzed
               - tools_discovered_by_category
               - decision_matrix_visual
@@ -1184,7 +1506,7 @@ phases:
               - detailed_tool_profiles
 
           - name: "Integration Plan"
-            location: "squads/{pack_name}/docs/tool-integration-plan.md"
+            location: "squads/{squad_name}/docs/tool-integration-plan.md"
             sections:
               - timeline_overview
               - immediate_actions
@@ -1193,7 +1515,7 @@ phases:
               - backlog
 
           - name: "Capability-Tools Mapping"
-            location: "squads/{pack_name}/data/capability-tools.yaml"
+            location: "squads/{squad_name}/data/capability-tools.yaml"
             format: "yaml"
 
     checkpoint:
@@ -1226,6 +1548,8 @@ phases:
           ═══════════════════════════════════════════════════════════════════
 
           DOMAIN: {domain}
+          INTERNAL CAPABILITIES COVERED: {internal_covered_count}
+          EXTERNAL-ONLY GAPS: {external_only_gaps_count}
           CAPABILITY GAPS ANALYZED: {gaps_count}
           TOTAL TOOLS DISCOVERED: {tools_count}
 
@@ -1236,6 +1560,8 @@ phases:
           │ APIs:           {api_count:>3} found │ Top: {top_api}           │
           │ CLIs:           {cli_count:>3} found │ Top: {top_cli}           │
           │ Libraries:      {lib_count:>3} found │ Top: {top_lib}           │
+          │ Skills (Comm):  {skill_count:>3} found │ Top: {top_skill}        │
+          │ Skills (Local): {local_skill_count:>3} match │ Top: {top_local_skill} │
           │ GitHub Projects:{gh_count:>3} found │ Top: {top_gh}            │
           └─────────────────────────────────────────────────────────────────┘
 
@@ -1252,9 +1578,9 @@ phases:
           {quick_wins_table}
 
           REPORTS GENERATED:
-          • squads/{pack_name}/docs/tool-discovery-report.md
-          • squads/{pack_name}/docs/tool-integration-plan.md
-          • squads/{pack_name}/data/capability-tools.yaml
+          • squads/{squad_name}/docs/tool-discovery-report.md
+          • squads/{squad_name}/docs/tool-integration-plan.md
+          • squads/{squad_name}/data/capability-tools.yaml
 
           ═══════════════════════════════════════════════════════════════════
 
@@ -1286,11 +1612,11 @@ phases:
 outputs:
   primary:
     - name: "Tool Discovery Report"
-      location: "squads/{pack_name}/docs/tool-discovery-report.md"
+      location: "squads/{squad_name}/docs/tool-discovery-report.md"
       description: "Comprehensive research findings with all discovered tools"
 
     - name: "Integration Plan"
-      location: "squads/{pack_name}/docs/tool-integration-plan.md"
+      location: "squads/{squad_name}/docs/tool-integration-plan.md"
       description: "Prioritized implementation timeline"
 
     - name: "Decision Matrix"
@@ -1299,7 +1625,7 @@ outputs:
 
   secondary:
     - name: "Capability-Tools Mapping"
-      location: "squads/{pack_name}/data/capability-tools.yaml"
+      location: "squads/{squad_name}/data/capability-tools.yaml"
       description: "Squad-specific capability to tool mapping"
 
     - name: "Updated Tool Registry"
@@ -1311,12 +1637,36 @@ outputs:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 heuristics:
+  - id: SC_DCV_001
+    name: "Domain Context Validation Complete"
+    phase: "phase_minus_2"
+    blocking: true
+    criteria:
+      - canonical_scope_extracted: true
+      - scope_from_name_only: false
+      - ambiguity_gate_passed: true
+    notes:
+      - "Discovery is forbidden when scope is inferred from name/slug only"
+      - "If canonical sources conflict, pause and request clarification"
+
+  - id: SC_INT_001
+    name: "Internal-First Coverage Complete"
+    phase: "phase_minus_1"
+    blocking: true
+    criteria:
+      - internal_library_loaded: true
+      - capabilities_mapped_to_internal: true
+      - external_scope_restricted_to_internal_gaps: true
+    notes:
+      - "External search is forbidden before internal coverage mapping"
+      - "Internal tools remain primary when coverage exists"
+
   - id: SC_TLD_001
     name: "Tool Discovery Complete"
     phase: "phase_3"
     blocking: true
     criteria:
-      - parallel_agents_executed: ">= 3 of 5"
+      - parallel_agents_executed: ">= 4 of 6"
       - tools_discovered: ">= 5"  # At least some tools found
       - tier_distribution_calculated: true
       - comparative_report_generated: true
@@ -1359,6 +1709,21 @@ heuristics:
       - "Present tier comparison for human decision"
       - "OSS preferred when same tier as paid"
 
+  - id: SC_TLD_005a
+    name: "Skills Coverage Complete"
+    phase: "phase_0.step_0_2b + phase_1.agent_skill"
+    blocking: false
+    criteria:
+      - local_skills_scanned: true
+      - local_squads_scanned: true
+      - community_skills_searched: true
+      - skills_matched_to_gaps: true
+    notes:
+      - "Local skills are ALWAYS checked first (zero cost, immediate value)"
+      - "Community skills supplement what local doesn't cover"
+      - "Skills with 'adaptable' status are fork candidates"
+      - "A skill that covers a gap can eliminate external tool need for that gap"
+
   - id: SC_TLD_005
     name: "Decision Matrix Generated"
     phase: "phase_2.step_2_8"
@@ -1395,6 +1760,14 @@ search_depth_config:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 error_handling:
+  ambiguous_or_unknown_scope:
+    action: "Halt discovery and request clarification"
+    retry: false
+
+  canonical_scope_conflict:
+    action: "Log contradictions and request human resolution before proceeding"
+    retry: false
+
   agent_timeout:
     action: "Continue with other agents, mark as partial"
     retry: false
@@ -1415,14 +1788,29 @@ error_handling:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 metadata:
-  version: "2.0"
+  version: "3.0"
   created: "2026-02-03"
-  updated: "2026-02-03"
+  updated: "2026-02-19"
   author: "squad-chief"
-  lines: "900+"
-  purpose: "Deep parallel tool discovery with RELATIVE TIERS - comparing tools against each other, not absolute values"
-  philosophy: "Não existem valores absolutos universais. Um projeto com 30 stars pode ser excelente se for o melhor do nicho."
+  lines: "1100+"
+  purpose: "Deep parallel tool + skill discovery with RELATIVE TIERS - tools AND skills compared in context"
+  philosophy: |
+    "Não existem valores absolutos universais. Um projeto com 30 stars pode ser excelente se for o melhor do nicho."
+    "Skills são zero-cost e imediatos - priorizar reuso de skills antes de ferramentas externas."
   changelog:
+    v3.0:
+      - "Added Skill Discovery as hybrid flow (local scan + parallel skill agent)"
+      - "Phase 0: New step_0_2b scans local skills (.claude/skills/) and squads (squads/*/config.yaml)"
+      - "Phase 1: New agent_skill (6th parallel agent) searches community skills, prompt libraries, agent frameworks"
+      - "Phase 2: Consolidation includes skill and local_skill categories"
+      - "Phase 3: Registry updates include skill_recommendations and fork_candidates"
+      - "Phase 4: Handoff template shows Skills (external + local) counts"
+      - "New heuristic SC_TLD_005a for Skills Coverage validation"
+      - "Checkpoint criteria updated: 4 of 6 agents required (was 3 of 5)"
+    v2.2:
+      - "Added mandatory PHASE -2 Domain Context Validation gate"
+      - "Added SC_DCV_001 heuristic (no name-only inference)"
+      - "Added explicit ambiguity/conflict error handling"
     v2.0:
       - "MAJOR: Replaced absolute thresholds with RELATIVE TIERS"
       - "Tools compared by PERCENTILE within dataset (Top 20%, 21-50%, etc.)"

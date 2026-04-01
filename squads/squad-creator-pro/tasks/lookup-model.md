@@ -2,6 +2,8 @@
 
 **Command:** `*lookup-model <task-name>`
 **Execution Type:** Worker (deterministic, no LLM needed)
+**Model:** Haiku
+**Haiku Eligible:** YES
 
 ## Purpose
 

@@ -2,9 +2,23 @@
 
 > Pedro Valério | Loaded on-demand when `*audit {squad}` is invoked
 
+**Execution Type:** Agent
+**Model:** Opus
+**Haiku Eligible:** NO
+
 ## Purpose
 
 Auditar squad/workflow por falhas de processo usando framework "Impossibilitar Caminhos"
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-PVA-001 | Audit must not exceed 10k token budget across all phases | Track cumulative token usage: Phase 1 ~2k + Phase 2 ~5k + Phase 3 ~3k = 10k max | VETO - BLOCK. Audit exceeding context budget is a broken audit. Reduce scope or batch. |
+| VETO-PVA-002 | Must not read all agent files at once without batching | Verify no more than 3 files are read per phase | VETO - BLOCK. Use --all with batching (3 agents per batch) instead. |
+| VETO-PVA-003 | Deep-dive (Phase 3) must not execute without user direction | Verify user explicitly requested specific agent/workflow/dna analysis | VETO - BLOCK. Phase 3 is on-demand only. Halt and ask user for direction. |
+
+> Legacy format retained as domain-specific complement: inline VETO CONDITION in Token Budget section below.
 
 ## CRITICAL: Token Budget
 

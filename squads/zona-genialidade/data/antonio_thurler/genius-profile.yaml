@@ -1,0 +1,572 @@
+genius_profile:
+  metadata:
+    aluno: "Antonio Mario Thurler Junior"
+    slug: "antonio_thurler"
+    data_analise: "2026-03-31"
+    version: "1.0.0"
+    frameworks_executados: 7
+    confianca_geral: 0.88
+    quality_gate_QG003: "PASSED"
+
+  # =====================================================================
+  # TIER 0: GAY HENDRICKS — Zona de Genialidade
+  # =====================================================================
+  hendricks_analysis:
+    agente: "gay-hendricks"
+    confianca: 0.90
+
+    zone_distribution:
+      incompetencia:
+        percentual: "5%"
+        atividades:
+          - "Tarefas administrativas puras"
+          - "Trabalho repetitivo sem variação"
+        nota: "Mínimo residual — Antonio já delegou bem essa zona"
+
+      competencia:
+        percentual: "20%"
+        atividades:
+          - "Atendimento direto ao cliente"
+          - "Operação rotineira das franquias"
+          - "Controle financeiro detalhado"
+        nota: "Zona de desgaste — faz mas drena energia"
+
+      excelencia:
+        percentual: "50%"
+        atividades:
+          - "Gestão de projetos e equipes"
+          - "Negociação e fechamento de deals"
+          - "Planejamento estratégico operacional"
+          - "Organização de sistemas e processos"
+        nota: "ARMADILHA ATUAL — aqui mora o maior risco. Antonio é excepcional nisso e recebe reconhecimento, o que o mantém preso nessa zona."
+
+      genialidade:
+        percentual: "25%"
+        atividades:
+          - "Transformar conceitos complexos em linguagem acessível e prática"
+          - "Enxergar padrões e oportunidades antes dos outros"
+          - "Criar e testar sistemas educacionais inovadores"
+          - "Aconselhar e abrir perspectivas para outros empreendedores"
+        nota: "Zona onde o tempo desaparece. Evidência forte: flow declarado em criar+ensinar+pesquisar"
+
+    zona_atual_predominante: "Excelência (com incursões frequentes à Genialidade)"
+    zona_de_genialidade_core: >
+      Criar frameworks educacionais que transformam complexidade em clareza,
+      e enxergar o caminho de menor resistência para outros empreendedores
+      chegarem onde querem — de forma sistemática e escalável.
+
+    upper_limit_problem:
+      tipo_primario: "Tipo 1 — Sentir-se falho/Indignidade"
+      evidencia: >
+        "Dificuldades financeiras, restrições de crédito" como maior bloqueio
+        indica um padrão onde a capacidade de criar valor está dissociada da
+        capacidade de capturar valor financeiramente. Clássico ULP de quem
+        tem Zona de Genialidade validada mas não se permite cobrar pelo valor real.
+      tipo_secundario: "Tipo 3 — Medo de ser carga"
+      evidencia_secundaria: >
+        Três frentes simultâneas (Reduka + Happy + V4) sem foco máximo sugere
+        distribuição de energia para não depender de uma única fonte —
+        possivelmente por medo de onerar quem depende dele.
+      caminho_recomendado:
+        - "Identificar a frente com maior Zona de Genialidade e concentrar 60% do tempo"
+        - "Criar oferta premium em educação/consultoria que reflita o valor real"
+        - "Separar identidade de valor da situação financeira atual"
+        - "Usar restrição de crédito como combustível para criar, não como limitador de ação"
+
+  # =====================================================================
+  # TIER 1: DON CLIFTON — CliftonStrengths
+  # =====================================================================
+  clifton_analysis:
+    agente: "don-clifton"
+    confianca: 0.85
+
+    top_5_provaveis:
+      - rank: 1
+        tema: "Strategic"
+        dominio: "Strategic Thinking"
+        evidencia: >
+          "Enxergar tendências e oportunidades antes dos outros" como facilidade natural.
+          Frustrado com "falta de visão estratégica nas decisões". Pattern de sucesso
+          inclui "planejando estratégia de longo prazo". Score de confiança: muito alto.
+        confianca: 0.92
+
+      - rank: 2
+        tema: "Ideation"
+        dominio: "Strategic Thinking"
+        evidencia: >
+          Wealth Dynamics auto-declarado: CRIADOR. "Criar coisas novas" em lista de
+          atividades energizantes. Sucesso padrão: "criando algo novo e inovador".
+          Fica em flow "escrevendo e criando conteúdo". Timing preferido: PRIMEIRO.
+        confianca: 0.88
+
+      - rank: 3
+        tema: "Activator"
+        dominio: "Influencing"
+        evidencia: >
+          "Começa a executar logo e ajustar no caminho" como reação natural.
+          "Agir rápido com melhor opção disponível" em problema inesperado.
+          Acelerador de deadline. Não espera dados completos para agir.
+        confianca: 0.85
+
+      - rank: 4
+        tema: "Learner"
+        dominio: "Strategic Thinking"
+        evidencia: >
+          "Aprender coisas novas rapidamente" como facilidade natural que outros
+          acham difícil. Aprende de três formas simultâneas (lê tudo + faz + vê vídeos).
+          "Pesquisar, aprender coisas novas" no estado de flow.
+        confianca: 0.83
+
+      - rank: 5
+        tema: "Communication"
+        dominio: "Influencing"
+        evidencia: >
+          "Falar em público e apresentar ideias" e "escrever textos claros e persuasivos"
+          como facilidades naturais. "Ensinar e mentorar pessoas" gera energia.
+          "Explicar algo complexo de forma simples" é o que outros agradecem.
+        confianca: 0.80
+
+    dominio_dominante: "Strategic Thinking"
+    dominio_secundario: "Influencing"
+    nota: >
+      Combinação Strategic Thinking + Influencing é o DNA de educadores-empreendedores
+      que escalam via conteúdo e posicionamento. Pensa grande E sabe comunicar.
+
+    talentos_sombra:
+      - tema: "Command"
+        evidencia: "Direto, vai ao ponto, executa sem precisar de permissão"
+        motivo_sombra: "Pode estar sendo suprimido pelo ambiente de múltiplas responsabilidades"
+        potencial: "Ao ativar Command explicitamente, Antonio se torna um líder de opinião mais assertivo"
+      - tema: "Futuristic"
+        evidencia: "Visão de conselheiro/investidor de longo prazo como sonho declarado"
+        motivo_sombra: "Operação diária impede visão de horizonte longo"
+        potencial: "Ativado, amplia capacidade de criar movimentos, não só negócios"
+
+  # =====================================================================
+  # TIER 1: DAN SULLIVAN — Unique Ability
+  # =====================================================================
+  sullivan_analysis:
+    agente: "dan-sullivan"
+    confianca: 0.87
+
+    unique_ability_statement:
+      declaracao: >
+        Minha habilidade única é transformar conhecimento complexo em sistemas
+        educacionais práticos e escaláveis para empreendedores e educadores,
+        criando clareza onde existe confusão e abrindo caminhos que outras pessoas
+        não conseguem ver — de uma forma que inspira ação imediata e resultados
+        mensuráveis.
+      versao_curta: "Transformar complexidade em clareza educacional que gera ação"
+      confianca: 0.85
+
+    sullivan_zones:
+      unique_ability:
+        atividades:
+          - atividade: "Criar frameworks educacionais e metodologias proprietárias"
+            score_paixao: 9
+            score_talento: 9
+            score_valor_mercado: 8
+          - atividade: "Aconselhar empreendedores em pontos de inflexão"
+            score_paixao: 9
+            score_talento: 8
+            score_valor_mercado: 9
+          - atividade: "Transformar conceitos abstratos em conteúdo prático e aplicável"
+            score_paixao: 8
+            score_talento: 9
+            score_valor_mercado: 8
+
+      excellent:
+        atividades:
+          - atividade: "Gestão estratégica de negócios"
+            nota: "Muito bom nisso, mas não é sua paixão — delegar a sócios ou COO"
+          - atividade: "Negociação e fechamento de deals"
+            nota: "Alto talento, mas consome energia que poderia ir para UA"
+
+      competent:
+        atividades:
+          - atividade: "Gestão financeira e controle de caixa"
+            recomendacao: "Delegar para CFO/contador com urgência"
+          - atividade: "Atendimento ao cliente rotineiro"
+            recomendacao: "Sistemizar e delegar"
+
+      incompetent:
+        atividades:
+          - atividade: "Tarefas administrativas burocráticas"
+            recomendacao: "Eliminar ou terceirizar imediatamente"
+
+    time_distribution:
+      atual_estimado:
+        unique_ability: "20%"
+        excellent: "45%"
+        competent: "25%"
+        incompetent: "10%"
+      ideal:
+        unique_ability: "60%+"
+        excellent: "25%"
+        competent: "10%"
+        incompetent: "0%"
+      gap: "Precisa mover ~40% do tempo para Unique Ability"
+      caminho: >
+        Com 3 frentes simultâneas (Reduka + Happy + V4), a energia está fragmentada.
+        Prioridade: concentrar UA em Reduka (educação — sua Zona de Genialidade core),
+        sistemizar Happy para operar com menos intervenção, e usar V4 como alavanca
+        de marketing para o ecossistema educacional.
+
+    delegation_candidates:
+      prioridade_alta:
+        - atividade: "Operação administrativa Happy/Reduka"
+          horas_liberadas_estimadas: 10
+          tipo_profissional: "Assistente operacional"
+        - atividade: "Atendimento rotineiro de alunos"
+          horas_liberadas_estimadas: 6
+          tipo_profissional: "Coordenador pedagógico"
+      prioridade_media:
+        - atividade: "Controle financeiro detalhado"
+          horas_liberadas_estimadas: 4
+          tipo_profissional: "CFO part-time ou contador estratégico"
+
+  # =====================================================================
+  # TIER 1: ROGER HAMILTON — Wealth Dynamics
+  # =====================================================================
+  hamilton_analysis:
+    agente: "roger-hamilton"
+    confianca: 0.88
+
+    wealth_dynamics:
+      perfil_primario: "CREATOR"
+      score_primario: 0.88
+      evidencias_creator:
+        - "Auto-declarado CRIADOR no assessment"
+        - "Timing preferido: PRIMEIRO em algo novo"
+        - "Pattern de sucesso: criando algo novo e inovador"
+        - "Flow em criar conteúdo, criar produtos"
+        - "Múltiplos negócios iniciados simultaneamente"
+
+      perfil_secundario: "LORD (Senhor dos Sistemas)"
+      score_secundario: 0.72
+      evidencias_lord:
+        - "Auto-declarado SENHOR DOS SISTEMAS no assessment"
+        - "Automatizar sistemas como atividade energizante"
+        - "Flow em organizar, sistematizar, criar processos"
+        - "Delega bem com instruções claras"
+        - "Modelo atraente: sistemas que funcionam sem ele"
+
+      nota_combinacao: >
+        Creator + Lord é combinação rara e poderosa. A maioria dos Creators
+        fracassa em escala porque não consegue sistemizar. Antonio tem
+        instinto de sistemização — isso é o que separa fundadores de
+        criadores de conteúdo. O risco: fazer muitas coisas ao mesmo tempo
+        (Creator tendência), sem sistemizar cada uma (Lord tendência).
+        Foco é o antídoto.
+
+    wealth_spectrum:
+      nivel_atual: "Yellow (Jogador)"
+      evidencia: >
+        Tem negócios próprios, renda variável, está expandindo (V4, Happy, Reduka).
+        Ainda opera pessoalmente em muitas frentes — transição para Green.
+      nivel_alvo_90_dias: "Yellow → Green"
+      nivel_alvo_12_meses: "Green (Empreendedor — negócio funciona sem ele)"
+      bloqueio_atual: >
+        Restrição de crédito é bloqueio Yellow clássico. No Yellow, o empreendedor
+        ainda troca tempo por dinheiro e depende de capital externo para escalar.
+        A saída é criar oferta de alto valor que gere caixa rápido — não pedir crédito.
+
+    path_of_least_resistance:
+      caminho: >
+        Creator cria o produto educacional premium (metodologia proprietária Reduka).
+        Lord sistemiza a entrega (squad de educadores, processo padronizado).
+        Star (latente) comunica e vende através de conteúdo e presença.
+        Resultado: negócio educacional escalável que funciona sem Antonio no centro.
+      erros_comuns_creator:
+        - "Criar demais sem sistemizar — abandona projetos na metade"
+        - "Depender de energia pessoal para gerar receita — burnout"
+        - "Subestimar o valor do que cria — preço baixo"
+      exemplos_creator_lord: ["Tony Robbins (criou + sistemizou eventos)", "Alex Hormozi (criou metodologia + Lord de operações)"]
+
+  # =====================================================================
+  # TIER 1: ALEX HORMOZI — Value Equation e Monetização
+  # =====================================================================
+  hormozi_analysis:
+    agente: "alex-hormozi"
+    confianca: 0.86
+
+    value_equation:
+      formula: "Valor = (Dream Outcome × Perceived Likelihood) / (Time Delay × Effort & Sacrifice)"
+
+      dream_outcome:
+        score: 9
+        analise: >
+          Antonio trabalha com dois mercados de alto sonho: empreendedores querendo
+          crescer e pais querendo futuro melhor para filhos (Happy). Ambos têm
+          dream outcome claro e urgente.
+
+      perceived_likelihood:
+        score: 6
+        analise: >
+          Metodologias ainda precisam de prova social escalada. Alunos existentes
+          validam, mas precisa de casos de sucesso documentados e visíveis.
+        acao: "Capturar e publicar 5-10 casos de transformação mensuráveis (resultados em R$ ou mudanças concretas)"
+
+      time_delay:
+        score: 5
+        analise: >
+          Educação tem percepção de resultado lento. Oportunidade de criar
+          'quick wins' no início do processo — alunos veem resultado em
+          30 dias, não 6 meses.
+        acao: "Redesenhar onboarding para entrega de resultado tangível nos primeiros 30 dias"
+
+      effort_sacrifice:
+        score: 6
+        analise: >
+          Metodologia atual parece demandar esforço do aluno. Oportunidade de
+          criar 'done with you' ou 'done for you' em algum nível.
+        acao: "Criar versão high-touch premium que reduz esforço do aluno"
+
+    grand_slam_offer:
+      conceito: >
+        "Em 90 dias, você vai criar seu primeiro produto digital educacional
+        validado e faturando, mesmo que comece do zero — ou eu trabalho
+        de graça até acontecer."
+      elementos:
+        - "Resultado específico e mensurável (produto + faturamento)"
+        - "Prazo concreto (90 dias)"
+        - "Garantia de risco reverso (trabalho de graça até acontecer)"
+        - "Para quem tem identidade empreendedora já formada"
+      fit_com_antonio: >
+        Antonio tem todas as ferramentas para entregar essa promessa:
+        experiência em educação, metodologia própria (Reduka), entendimento
+        de marketing (V4), e habilidade de ensinar complexo de forma simples.
+
+    core_4_channel:
+      canal_primario: "Content (educação + autoridade)"
+      canal_secundario: "Referrals (alunos → alunos, network V4)"
+      canal_terciario: "Outreach (para franquias Happy e Reduka presencial)"
+      nota: >
+        Com V4 como franqueado, Antonio tem acesso a metodologia de marketing
+        que pode acelerar drasticamente a aquisição de alunos para Reduka.
+        Essa é a sinergia mais poderosa que ele tem hoje.
+
+    bottleneck_analise:
+      bottleneck_atual: "Oferta (não capital)"
+      explicacao: >
+        A restrição de crédito é sintoma, não causa. A causa é que as ofertas
+        atuais provavelmente têm ticket médio baixo para o valor entregue.
+        Ao criar uma oferta de alto ticket com promessa clara e garantia,
+        o capital começa a fluir internamente antes de precisar de crédito externo.
+      prioridade_90_dias: "Criar oferta premium de R$5k-15k para o mercado de educação empreendedora"
+
+  # =====================================================================
+  # TIER 2: KATHY KOLBE — Modos de Ação Conativos
+  # =====================================================================
+  kolbe_analysis:
+    agente: "kathy-kolbe"
+    confianca: 0.82
+
+    kolbe_a_index:
+      fact_finder:
+        score: 6
+        descricao: "Pesquisa antes de agir, mas não paralisa"
+        evidencia: "Aprende por múltiplas fontes (lê, faz, assiste). Não é extremo — equilibra pesquisa com ação"
+        modo: "Respond (usa informação quando necessária, não acumula por acumular)"
+
+      follow_thru:
+        score: 6
+        descricao: "Sistemático quando importa, flexível quando pode"
+        evidencia: "Delega com instruções claras, melhora existente, organizar entra em flow. Depende do projeto para estrutura"
+        modo: "Respond (mantém sistemas que funcionam, adapta quando necessário)"
+
+      quick_start:
+        score: 8
+        descricao: "DOMINANTE — age rápido, itera, começa executando"
+        evidencia: >
+          "Começa a executar logo e ajustar no caminho" como reação natural.
+          "Agir rápido com melhor opção disponível" em problemas.
+          Timing: PRIMEIRO no mercado. Múltiplos projetos simultâneos.
+          Acelerador de deadline.
+        modo: "Initiate (gerador de Quick Start — começa coisas, cria momentum)"
+
+      implementor:
+        score: 4
+        descricao: "Prefere resultados concretos mas não precisa de protótipos físicos"
+        evidencia: "Prefere tangível mas não é extremo. Trabalho é mais digital/conceitual"
+        modo: "Prevent (evita builds físicos desnecessários)"
+
+    perfil_kolbe: "6-6-8-4"
+    descricao_perfil: >
+      Quick Start dominante com Follow Thru e Fact Finder de apoio.
+      Antonio é um iniciador natural que tem disciplina suficiente para
+      não abandonar projetos. O Follow Thru 6 é o que diferencia ele
+      de Creators que só começam e nunca terminam.
+    pontos_atencao:
+      - "Quick Start alto pode levar a excesso de projetos simultâneos — priorização é crítica"
+      - "Em time, buscar parceiro com Follow Thru 8-9 para sistemizar o que ele cria"
+    ideal_team_kolbe:
+      - papel: "COO / Gerente Operacional"
+        kolbe_ideal: "3-8-4-6 (Follow Thru alto, Implementor médio)"
+        nota: "Quem transforma ideias de Antonio em processos replicáveis"
+
+  # =====================================================================
+  # TIER 2: SALLY HOGSHEAD — Fascination Advantage
+  # =====================================================================
+  hogshead_analysis:
+    agente: "sally-hogshead"
+    confianca: 0.83
+
+    fascination_advantages:
+      vantagem_primaria: "POWER"
+      score_power: 8.5
+      evidencia_power:
+        - "Comunicação direta e objetiva como estilo natural"
+        - "Executor + Pensador Estratégico no time"
+        - "Frustrado com falta de visão e processos lentos (não aceita mediocridade)"
+        - "Cobrar bem e estar confortável com isso (não diminui valor)"
+        - "Timing de mercado: primeiro, não seguidor"
+
+      vantagem_secundaria: "PASSION"
+      score_passion: 7.5
+      evidencia_passion:
+        - "Comunicação inspiradora e entusiasmada como estilo natural"
+        - "Ensinar e mentorar como fonte de energia"
+        - "Flow em conversas de mentoria"
+        - "Outros agradecem por conselhos certeiros e conexão emocional"
+        - "Visão de família e qualidade de vida integrada ao sucesso"
+
+      vantagem_terciaria: "PRESTIGE"
+      score_prestige: 6.5
+      evidencia_prestige:
+        - "Faz bem e se sente confortável com o preço"
+        - "Analytical and deep — enxerga o que ninguém vê"
+        - "Padrão de excelência como frustração quando outros não alcançam"
+
+    arquetipo: "THE MAESTRO"
+    descricao_arquetipo: >
+      Power + Passion = The Maestro. Líderes que captivam com autoridade E
+      entusiasmo. Não precisam escolher entre ser respeitados ou serem amados —
+      conseguem os dois. São os educadores mais eficazes porque combinam
+      autoridade de domínio com calor humano genuíno.
+    nota: >
+      Este é o arquétipo perfeito para um educador-empreendedor que quer
+      construir autoridade de marca. O Maestro naturalmentecria seguidores
+      leais, não apenas clientes.
+
+    como_fascinates:
+      mensagem_primaria: "Eu te mostro um caminho que outros não conseguem ver — e você vai conseguir fazer."
+      risco_sem_usar: "Sem Power+Passion ativados, Antonio soa genérico. Com eles ativos, é inconfundível."
+      aplicacao_pratica:
+        - "Conteúdo: vídeos diretos com punchlines fortes (Power) + histórias reais de transformação (Passion)"
+        - "Vendas: apresentação que vai direto ao ponto E conecta emocionalmente"
+        - "Produto: nome e posicionamento com autoridade — não 'curso de marketing' mas 'sistema X'"
+
+  # =====================================================================
+  # SÍNTESE CRUZADA
+  # =====================================================================
+  cross_framework_synthesis:
+    convergencias:
+      - id: "CONV-1"
+        nome: "EDUCADOR-CRIADOR SISTÊMICO"
+        frameworks: ["hendricks", "clifton", "sullivan", "hamilton"]
+        descricao: >
+          Quatro frameworks independentes apontam para o mesmo núcleo:
+          Antonio cria metodologias educacionais (Hendricks: Zona de Genialidade;
+          Clifton: Strategic+Ideation+Communication; Sullivan: UA = transformar
+          complexo em claro; Hamilton: Creator primário). Isso NÃO é coincidência
+          — é o seu perfil mais fundamental.
+        confianca: 0.95
+
+      - id: "CONV-2"
+        nome: "QUICK STARTER COM CAPACIDADE DE SISTEMIZAR"
+        frameworks: ["kolbe", "hamilton", "sullivan"]
+        descricao: >
+          Kolbe Quick Start 8 + Hamilton Lord secundário + Sullivan (Follow Thru
+          em delegação) = raro Creator que consegue sistemizar. A maioria dos
+          Quick Starts abandona projetos. Antonio tem o Follow Thru necessário
+          para completar O QUE IMPORTA e delegar o resto.
+        confianca: 0.88
+
+      - id: "CONV-3"
+        nome: "LÍDER DE OPINIÃO NATURAL"
+        frameworks: ["clifton", "hogshead", "hendricks"]
+        descricao: >
+          Clifton Communication+Activator + Hogshead Power+Passion (The Maestro)
+          + Hendricks flow em ensinar/comunicar = pessoa wired para construir
+          audiência e influência. Não é uma habilidade a desenvolver — é um
+          instinto natural sendo subaproveitado.
+        confianca: 0.87
+
+      - id: "CONV-4"
+        nome: "MODELO DE NEGÓCIO IDEAL: EDUCAÇÃO ESCALÁVEL"
+        frameworks: ["hamilton", "hormozi", "sullivan"]
+        descricao: >
+          Hamilton Creator que escala via sistemas + Hormozi canal Content +
+          Sullivan UA em educação = o modelo de negócio natural de Antonio é
+          educação digital escalável com componente de mentoria premium.
+          Reduka é o veículo mais alinhado com esse perfil.
+        confianca: 0.90
+
+      - id: "CONV-5"
+        nome: "BLOQUEIO: CAPITAL ≠ CAUSA, OFERTA = SOLUÇÃO"
+        frameworks: ["hormozi", "hendricks", "hamilton"]
+        descricao: >
+          Hormozi (oferta, não capital) + Hendricks ULP Tipo 1 (indignidade
+          financeira) + Hamilton Yellow→Green (transição via oferta, não crédito)
+          convergem: o bloqueio financeiro se resolve criando uma oferta de alto
+          valor, não tomando empréstimo. O capital virá da oferta certa.
+        confianca: 0.88
+
+    insights_unicos:
+      - framework: "hormozi"
+        insight: >
+          A sinergia V4+Reduka é o Grand Slam Offer não explorado: Antonio tem
+          metodologia de educação E acesso a metodologia de marketing. Pode criar
+          o produto que ensina empreendedores a educarem para lucrar — usando
+          exatamente o que ele mesmo está vivendo como caso de estudo.
+
+      - framework: "hogshead"
+        insight: >
+          O arquétipo Maestro significa que Antonio não precisa escolher entre
+          ser o professor sério ou o mentor caloroso. Essa dualidade é exatamente
+          o que o torna diferente — e é o que deve comunicar explicitamente.
+
+      - framework: "kolbe"
+        insight: >
+          O Follow Thru 6 (não 8 ou 9) significa que Antonio precisa de um
+          parceiro operacional com Follow Thru alto para cada negócio que escala.
+          Com o parceiro certo, ele é imparável. Sem ele, a sistemização fica
+          incompleta.
+
+    contradicoes_documentadas:
+      - contradicao: "Melhorar existente vs. ser o primeiro"
+        resolucao: >
+          Isso é na verdade uma sequência: Antonio CRIA algo novo primeiro
+          (Creator/Quick Start), depois OTIMIZA para excelência (Lord/Follow Thru).
+          Não é contradição — é o seu ciclo de operação natural.
+
+      - contradicao: "Risco moderado vs. três frentes simultâneas"
+        resolucao: >
+          Antonio distribui risco através de múltiplas apostas ao mesmo tempo
+          — comportamento Creator clássico. Não é inconsistência, é estratégia
+          de portfólio instintiva. O ajuste necessário é FOCAR nas apostas certas,
+          não eliminar risco.
+
+    meta_insights:
+      - >
+        Antonio está em uma janela de oportunidade rara: tem o perfil
+        (Creator+Lord), as ferramentas (Reduka+Happy+V4), o timing (IA em
+        educação explodindo) e a capacidade (comunicação+estratégia).
+        O único gap é a oferta de alto valor que conecta tudo isso.
+
+      - >
+        A visão de "conselheiro e investidor" que Antonio tem para o futuro
+        NÃO é uma fantasia distante — é a evolução natural do Creator+Lord
+        que constrói sistemas que rodam sem ele. Ele já está no caminho.
+        A pergunta é de velocidade, não de direção.
+
+  quality_gate_QG003:
+    status: "PASSED"
+    analises_completas: "7/7"
+    confianca_media: 0.86
+    convergencias_identificadas: 5
+    insights_unicos: 2
+    contradicoes_documentadas: 2
+    contradicoes_resolvidas: 2
+    nota: "Perfil de alta qualidade com convergências fortes e zero contradições não resolvidas"

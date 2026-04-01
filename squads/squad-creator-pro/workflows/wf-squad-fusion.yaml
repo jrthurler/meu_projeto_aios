@@ -1101,7 +1101,7 @@ phases:
           # Data: {timestamp}
           # Modo: {mode}
 
-          pack:
+          squad:
             name: "{target_name}"
             title: "{target_title}"
             version: "1.0.0"
@@ -1255,7 +1255,7 @@ phases:
           4. Ter comandos que façam sentido para o domínio
 
           Use o template base de:
-          squads/squad-creator-pro/templates/orchestrator-tmpl.md
+          squads/squad-creator/templates/orchestrator-tmpl.md
 
           Output: Markdown completo do orchestrator
         output_path: "squads/{target_name}/agents/{target_name}-chief.md"
@@ -1389,7 +1389,7 @@ phases:
 # ═══════════════════════════════════════════════════════════════════════════════
   - id: phase_7_5_command_sync
     name: "Command Sync (IDE Integration)"
-    description: "Sincronizar commands para .claude/commands/ e remover commands antigos"
+    description: "Sincronizar commands para .claude/agents/ e remover commands antigos"
     pattern: "Deploy + Cleanup"
     rollback: "Re-sync from squads/"
 
@@ -1407,42 +1407,42 @@ phases:
         executor: Worker
         command: |
           for squad in {source_squads}:
-            if [ -d ".claude/commands/{squad}" ]; then
-              rm -rf ".claude/commands/{squad}"
-              echo "✅ Removed: .claude/commands/{squad}"
+            if [ -d ".claude/agents/{squad}" ]; then
+              rm -rf ".claude/agents/{squad}"
+              echo "✅ Removed: .claude/agents/{squad}"
             fi
-            if [ -f ".claude/commands/{squad}.md" ]; then
-              rm -f ".claude/commands/{squad}.md"
-              echo "✅ Removed: .claude/commands/{squad}.md"
+            if [ -f ".claude/agents/{squad}.md" ]; then
+              rm -f ".claude/agents/{squad}.md"
+              echo "✅ Removed: .claude/agents/{squad}.md"
             fi
 
       - id: create_command_structure
         action: "Criar estrutura de commands do target"
         executor: Worker
         command: |
-          mkdir -p .claude/commands/{target_name}/agents
-          mkdir -p .claude/commands/{target_name}/tasks
-          mkdir -p .claude/commands/{target_name}/skills
+          mkdir -p .claude/agents/{target_name}/agents
+          mkdir -p .claude/agents/{target_name}/tasks
+          mkdir -p .claude/agents/{target_name}/skills
 
       - id: copy_agents_to_commands
-        action: "Copiar agents para .claude/commands/"
+        action: "Copiar agents para .claude/agents/"
         executor: Worker
         command: |
-          cp squads/{target_name}/agents/*.md .claude/commands/{target_name}/agents/
-          echo "✅ Copied $(ls -1 .claude/commands/{target_name}/agents/*.md | wc -l) agents"
+          cp squads/{target_name}/agents/*.md .claude/agents/{target_name}/agents/
+          echo "✅ Copied $(ls -1 .claude/agents/{target_name}/agents/*.md | wc -l) agents"
 
       - id: copy_tasks_to_commands
-        action: "Copiar tasks para .claude/commands/"
+        action: "Copiar tasks para .claude/agents/"
         executor: Worker
         command: |
-          cp squads/{target_name}/tasks/*.md .claude/commands/{target_name}/tasks/
-          echo "✅ Copied $(ls -1 .claude/commands/{target_name}/tasks/*.md | wc -l) tasks"
+          cp squads/{target_name}/tasks/*.md .claude/agents/{target_name}/tasks/
+          echo "✅ Copied $(ls -1 .claude/agents/{target_name}/tasks/*.md | wc -l) tasks"
 
       - id: copy_skills_to_commands
-        action: "Copiar skills para .claude/commands/"
+        action: "Copiar skills para .claude/agents/"
         executor: Worker
         command: |
-          find squads/{target_name}/skills -name 'SKILL.md' -exec cp {} .claude/commands/{target_name}/skills/ \; 2>/dev/null
+          find squads/{target_name}/skills -name 'SKILL.md' -exec cp {} .claude/agents/{target_name}/skills/ \; 2>/dev/null
           echo "✅ Copied skills"
 
       - id: create_main_command
@@ -1459,34 +1459,34 @@ phases:
 
           Do NOT search for files. Do NOT load additional files on activation.
           Only read the agent file above and execute its greeting script.
-        output_path: ".claude/commands/{target_name}.md"
+        output_path: ".claude/agents/{target_name}.md"
 
       - id: verify_command_sync
         action: "Verificar sincronização"
         executor: Worker
         command: |
           echo "=== COMMAND SYNC VERIFICATION ==="
-          echo "Main command: $(test -f .claude/commands/{target_name}.md && echo '✅' || echo '❌')"
-          echo "Agents dir: $(test -d .claude/commands/{target_name}/agents && echo '✅' || echo '❌')"
-          echo "Tasks dir: $(test -d .claude/commands/{target_name}/tasks && echo '✅' || echo '❌')"
-          echo "Agent count: $(ls -1 .claude/commands/{target_name}/agents/*.md 2>/dev/null | wc -l)"
-          echo "Task count: $(ls -1 .claude/commands/{target_name}/tasks/*.md 2>/dev/null | wc -l)"
+          echo "Main command: $(test -f .claude/agents/{target_name}.md && echo '✅' || echo '❌')"
+          echo "Agents dir: $(test -d .claude/agents/{target_name}/agents && echo '✅' || echo '❌')"
+          echo "Tasks dir: $(test -d .claude/agents/{target_name}/tasks && echo '✅' || echo '❌')"
+          echo "Agent count: $(ls -1 .claude/agents/{target_name}/agents/*.md 2>/dev/null | wc -l)"
+          echo "Task count: $(ls -1 .claude/agents/{target_name}/tasks/*.md 2>/dev/null | wc -l)"
 
       - id: log_command_sync
         action: "Registrar no audit log"
         executor: Worker
         audit_event:
           type: "command_sync_complete"
-          target: ".claude/commands/{target_name}"
+          target: ".claude/agents/{target_name}"
           sources_removed: "{source_squads}"
           timestamp: "{now}"
 
     quality_gate:
       name: "Command Sync Gate"
       checks:
-        - ".claude/commands/{target_name}.md existe"
-        - ".claude/commands/{target_name}/agents/ tem agents"
-        - ".claude/commands/{target_name}/tasks/ tem tasks"
+        - ".claude/agents/{target_name}.md existe"
+        - ".claude/agents/{target_name}/agents/ tem agents"
+        - ".claude/agents/{target_name}/tasks/ tem tasks"
         - "Commands dos squads fonte foram removidos"
       veto_on: "Main command não existe"
 
@@ -1540,7 +1540,7 @@ phases:
             echo "REMOVED: squads/{squad}"
 
       - id: update_registry
-        action: "Atualizar squad-registry.yaml"
+        action: "Atualizar ecosystem-registry.yaml"
         executor: Worker
         command: "Execute *refresh-registry"
 
@@ -1627,7 +1627,7 @@ quick_reference:
     - "Phase 5: Validation - Quality gates"
     - "Phase 6: Structure - Criar squad final"
     - "Phase 7: Integration - Testar funcionamento"
-    - "Phase 7.5: Command Sync - Sincronizar .claude/commands/"
+    - "Phase 7.5: Command Sync - Sincronizar .claude/agents/"
     - "Phase 8: Cleanup - Remover fontes (opcional)"
 
   checkpoints:
@@ -1662,7 +1662,7 @@ changelog:
     date: "2026-02-04"
     changes:
       - "Adicionado Phase 7.5: Command Sync (IDE Integration)"
-      - "Sincronização automática de .claude/commands/"
+      - "Sincronização automática de .claude/agents/"
       - "Remoção automática de commands dos squads fonte"
       - "Atualizado quick_reference com nova fase"
 

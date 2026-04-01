@@ -52,7 +52,7 @@ trap "rm -rf $TMP" EXIT
 # Fixture: modern workflow (should score high)
 cat > "$TMP/modern.yaml" << 'FIXTURE'
 name: modern-workflow
-description: A fully modern AIOS workflow
+description: A fully modern AIOX workflow
 
 # Teams
 Use TeamCreate to set up the team.

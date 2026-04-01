@@ -1,6 +1,12 @@
 ---
 task: Extract SOP from Transcript
-responsavel: "@sop-extractor"
+task_id: extract-sop
+version: 1.1.0
+execution_type: Agent
+model: Opus
+model_rationale: "SOP extraction from transcripts requires deep semantic comprehension of processes. Not deterministic."
+haiku_eligible: false
+responsavel: "@squad-chief"
 responsavel_type: agent
 atomic_layer: task
 elicit: true
@@ -17,12 +23,26 @@ config:
 
 **Squad:** squad-creator
 **Phase:** Discovery
-**Agent:** @sop-extractor
+**Agent:** @squad-chief
 **Pattern:** SC-PE-001 (SOP Extraction Standard)
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-ESP-001 | Transcript input must be successfully fetched and non-empty before extraction begins | Validate transcript object has transcript_content with length > 0 | VETO - BLOCK. Resolve data source configuration and retry fetch. |
+| VETO-ESP-002 | Existing SOP documents at output path must be backed up before overwrite | Check if sop_document, squad_blueprint, or gap_report already exist | VETO - BLOCK. Create backup of existing SOP files before writing new extraction. |
+| VETO-ESP-003 | META-AXIOMAS quality score must be evaluated before squad blueprint generation | Verify Step 6 quality assessment completes with score >= 7.0 threshold | VETO - BLOCK. Review weak dimensions and improve process before generating blueprint. |
+
+## Checklist Reference
+
+Before marking this task complete, verify against: `checklists/sop-validation.md`
+
+---
 
 ## Purpose
 
-Extract a complete, AIOS-ready Standard Operating Procedure (SOP) from a meeting transcript where someone explained a business process. The output is structured to enable immediate squad creation for hybrid automation.
+Extract a complete, AIOX-ready Standard Operating Procedure (SOP) from a meeting transcript where someone explained a business process. The output is structured to enable immediate squad creation for hybrid automation.
 
 ## Task Anatomy (HO-TP-001)
 
@@ -30,7 +50,7 @@ Extract a complete, AIOS-ready Standard Operating Procedure (SOP) from a meeting
 |-------|-------|
 | task_name | Extract SOP from Transcript |
 | status | pending |
-| responsible_executor | @sop-extractor |
+| responsible_executor | @squad-chief |
 | execution_type | Hybrid (Agent extracts, Human validates) |
 | estimated_time | 1-2h per process |
 | input | transcript, domain_context |

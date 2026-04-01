@@ -1,0 +1,1 @@
+/users/jrthurler/code/meu_projeto_AIOS/squads/squad-creator-pro/tasks/pv-modernization-score.md

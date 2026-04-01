@@ -1,7 +1,11 @@
 ---
 task-id: auto-acquire-sources
 name: Automated Source Acquisition
-version: 2.0.0
+version: 2.1.0
+execution_type: Hybrid
+model: Haiku
+model_rationale: "Web search + fetch are deterministic. LLM only formats/summarizes results. QUALIFIED."
+haiku_eligible: true
 estimated-time: 15-30 min
 complexity: low
 
@@ -39,6 +43,16 @@ elicit: false
 > **Princípio:** "Maximize o material antes de extrair. Mais fontes = maior fidelidade."
 >
 > **Modo:** Executa automaticamente, sem input do usuário.
+
+---
+
+## Veto Conditions
+
+| ID | Condition | Check | Result |
+|----|-----------|-------|--------|
+| VETO-AAS-001 | mind_name and domain inputs must be non-empty strings | Validate inputs before executing any search queries | VETO - BLOCK. Reject execution and request valid inputs from caller. |
+| VETO-AAS-002 | Target output directory must be writable and not overwrite existing curated sources without confirmation | Check if sources_inventory.yaml already exists at target path | VETO - BLOCK. Prompt for merge/replace strategy before proceeding. |
+| VETO-AAS-003 | At least one search tool (exa, youtube-transcript, firecrawl) must be available | Verify tool availability via MCP connection check | VETO - BLOCK. Report missing tools and halt acquisition. |
 
 ---
 

@@ -1,7 +1,7 @@
 # wf-create-squad.yaml
 # Master Workflow: Complete Squad Creation Orchestration
-# Version: 2.7
-# Last Updated: 2026-02-10
+# Version: 2.8
+# Last Updated: 2026-03-06
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # WORKFLOW METADATA
@@ -10,11 +10,11 @@
 workflow:
   id: wf-create-squad
   name: "Create Complete Squad"
-  version: "2.6"
-  purpose: "Orchestrate the complete creation of an AIOS squad from research to validation"
+  version: "2.8"
+  purpose: "Orchestrate the complete creation of an AIOX squad from research to validation"
   orchestrator: "@squad-chief"
   mode: "yolo"  # yolo | quality | hybrid
-  governance_protocol: "squads/squad-creator-pro/protocols/ai-first-governance.md"
+  governance_protocol: "squads/squad-creator/protocols/ai-first-governance.md"
   ci_policy:
     blocking_deterministic_only: true
     semantic_checks_in_checkpoints: true
@@ -388,6 +388,12 @@ inputs:
       description: "Path to existing research if available"
       example: "docs/research/copywriting-research.md"
 
+    - name: workspace_integration_level
+      type: enum
+      values: ["none", "read_only", "read_write", "workspace_first"]
+      default: "read_only"
+      description: "Override workspace integration level for generated squad"
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # PRECONDITIONS
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -552,8 +558,27 @@ phases:
           - entry_agent: "Primary activation agent id (default: {squad_name}-chief)"
           - slash_prefix: "camelCase"
           - pattern_prefix: "2-letter code"
+          - workspace_integration_level: "none | read_only | read_write | workspace_first"
         output:
           pack_config: "Initial config.yaml content"
+          workspace_integration_level: "Selected level"
+
+      - id: step_0_4
+        name: "Classify Workspace Integration"
+        action: "Define canonical workspace contract for generated squad"
+        rules:
+          - level_none: "No workspace reads/writes required by squad behavior"
+          - level_read_only: "Reads workspace context/data but does not mutate it"
+          - level_read_write: "Reads workspace context and writes managed artifacts"
+          - level_workspace_first: "Squad bootstraps runtime from workspace and must validate essentials"
+        output:
+          workspace_contract:
+            level: "none|read_only|read_write|workspace_first"
+            rationale: "Why this level is required"
+            read_paths: "list"
+            write_paths: "list"
+            template_namespace: "string|null"
+            output_file: "outputs/squad_creation/{squad_name}/workspace-integration-level.yaml"
 
     checkpoint:
       id: CP_PHASE_0
@@ -562,6 +587,7 @@ phases:
       criteria:
         - viability_score: ">= 6"
         - squad_name: "defined"
+        - workspace_integration_level: "defined"
         - no_duplicate: true
       on_fail:
         action: "Present issues, suggest alternatives"
@@ -1002,6 +1028,7 @@ phases:
           - agents_list
           - workflows_list
           - tasks_list
+          - workspace_integration_governance
           - usage_examples
 
       - id: step_4_4
@@ -1012,6 +1039,20 @@ phases:
           - all_components_listed: true
           - entry_agent_defined: true
           - version_correct: true
+          - workspace_integration_level_declared: true
+          - workspace_integration_level_valid_enum: true
+          - workspace_contract_paths_declared: true
+          - workspace_first_has_bootstrap_scripts: "conditional"
+
+      - id: step_4_5
+        name: "Run Workspace Integration Governance Check"
+        action: "Validate workspace integration gates before final validation"
+        checks:
+          - level_defined_and_valid: true
+          - if_level_not_none_workspace_paths_referenced: true
+          - if_workspace_first_bootstrap_and_essentials_scripts_exist: true
+        output:
+          workspace_integration_governance: "pass|fail"
 
     checkpoint:
       id: CP_PHASE_4
@@ -1021,6 +1062,8 @@ phases:
         - all_dependencies_wired: true
         - readme_complete: true
         - config_valid: true
+        - workspace_contract_valid: true
+        - workspace_requirements_met: true
 
   # ─────────────────────────────────────────────────────────────────────────────
   # PHASE 5: VALIDATION
@@ -1052,6 +1095,7 @@ phases:
           - tasks
           - documentation
           - integration
+          - workspace_governance
 
       - id: step_5_2
         name: "Quality Dimensions Scoring"
@@ -1102,6 +1146,7 @@ phases:
         - checklist_pass: true
         - quality_score: ">= 7.0"
         - no_blocking_issues: true
+        - workspace_integration_governance_pass: true
       output:
         final_score: "X/10"
         status: "PASS | FAIL"
@@ -1177,6 +1222,62 @@ phases:
       quality_score: "X/10"
       agents_created: "count"
       status: "COMPLETE"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FIX_CYCLE: Remediation cycle for recoverable failures
+  # Added by SCP-7 (Workflow Hardening)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - id: fix_cycle
+    name: "FIX CYCLE"
+    purpose: "Remediation cycle for recoverable failures from checkpoint/veto conditions"
+    duration: "5-15 minutes per retry"
+    mode: "autonomous"
+    terminal: false
+
+    max_retries: 3
+    retry_count: 0
+
+    actions:
+      - "Identify failing checkpoint or veto condition"
+      - "Log failure: phase, checkpoint_id, veto_id, failure_reason"
+      - "Apply targeted fix based on failure type"
+      - "Re-validate the specific failing condition"
+
+    failure_context:
+      tracks:
+        - originating_phase: "Phase that triggered fix_cycle"
+        - failure_type: "checkpoint_failed | veto_triggered | quality_gate_failed"
+        - checkpoint_id: "CP_PHASE_X or veto ID"
+        - failure_reason: "Specific reason for failure"
+        - retry_count: "Current retry number"
+
+    # Transition routing is defined in top-level `transitions` using canonical
+    # `from` -> `to` edges so graph-based tooling can evaluate failure paths.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FAILED: Terminal dead-end state for unrecoverable failures
+  # Added by SCP-7 (Workflow Hardening)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - id: failed
+    name: "FAILED"
+    purpose: "Terminal dead-end state for unrecoverable failures"
+    terminal: true
+
+    actions:
+      - "Log failure reason, originating phase, and retry history"
+      - "Generate failure report for human review"
+      - "Preserve all artifacts created up to failure point"
+      - "Record failure in session metrics"
+
+    output:
+      failure_report:
+        originating_phase: "Phase where failure originated"
+        failure_reason: "Root cause description"
+        retry_history: "List of fix_cycle attempts"
+        artifacts_preserved: "Paths to partial outputs"
+        recommended_action: "Manual intervention guidance"
+
+    transitions: []  # Dead-end — no exits. Human must restart workflow.
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TRANSITIONS (Explicit conditions for phase progression)
@@ -1286,9 +1387,9 @@ transitions:
 
   - from: phase_4
     to: phase_5
-    condition: integration_complete
+    condition: integration_complete AND workspace_integration_governance_passed
     checkpoint_required: false
-    description: "Dependencies wired, docs generated"
+    description: "Dependencies wired, docs generated, workspace governance validated"
 
   - from: phase_5
     to: phase_6
@@ -1298,10 +1399,63 @@ transitions:
     veto_check: [SC_VC_007, SC_VC_008, SC_VC_009, SC_VC_010]
     description: "All quality gates pass, no blocking issues"
 
+  - from: fix_cycle
+    to: phase_0
+    trigger: fix_successful
+    condition: "originating_phase == 'phase_0' AND retry_count < max_retries AND fix_validated"
+    description: "Fix validated for discovery phase — return to phase_0"
+
+  - from: fix_cycle
+    to: phase_3
+    trigger: fix_successful
+    condition: "originating_phase == 'phase_3' AND retry_count < max_retries AND fix_validated"
+    description: "Fix validated for creation phase — return to phase_3"
+
+  - from: fix_cycle
+    to: phase_5
+    trigger: fix_successful
+    condition: "originating_phase == 'phase_5' AND retry_count < max_retries AND fix_validated"
+    description: "Fix validated for validation phase — return to phase_5"
+
+  - from: fix_cycle
+    to: failed
+    trigger: max_retries_exceeded
+    condition: "retry_count >= max_retries"
+    description: "Exhausted retries in fix_cycle — move to terminal failed state"
+
+  - from: fix_cycle
+    to: failed
+    trigger: fix_not_possible
+    condition: "failure_type == 'unrecoverable'"
+    description: "Failure is not recoverable — move to terminal failed state"
+
   - from: phase_6
     to: complete
     condition: handoff_accepted
     description: "User acknowledged squad creation"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # FAILURE TRANSITIONS (Added by SCP-7 — Workflow Hardening)
+  # Routes checkpoint/veto failures to fix_cycle for remediation
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - from: phase_0
+    to: fix_cycle
+    trigger: checkpoint_failed
+    condition: "CP_PHASE_0 fails (viability_score < 6 OR duplicate detected OR SC_VC_001 triggered)"
+    description: "Discovery validation fails — route to fix_cycle for remediation"
+
+  - from: phase_3
+    to: fix_cycle
+    trigger: checkpoint_failed
+    condition: "CP_PHASE_3 fails (quality_gate_failed OR SC_VC_003/004/005/006 triggered)"
+    description: "Creation quality gate fails — route to fix_cycle for remediation"
+
+  - from: phase_5
+    to: fix_cycle
+    trigger: checkpoint_failed
+    condition: "CP_PHASE_5 fails (axioma_score < 7.0 OR SC_VC_007/008/009/010 triggered)"
+    description: "Validation fails — route to fix_cycle for remediation"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # OUTPUTS
@@ -1349,6 +1503,10 @@ outputs:
     - name: "Session Report"
       location: "squads/{squad_name}/docs/creation-report.md"
       description: "Creation session documentation"
+
+    - name: "Workspace Integration Contract"
+      location: "outputs/squad_creation/{squad_name}/workspace-integration-level.yaml"
+      description: "Canonical workspace integration level + rationale and path contract"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # HEURISTICS REFERENCE
@@ -1542,12 +1700,20 @@ metrics:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 metadata:
-  version: "2.7"
+  version: "2.8"
   created: "2026-02-01"
-  last_updated: "2026-02-10"
+  last_updated: "2026-03-06"
   author: "squad-chief"
   lines: "900+"
   changelog:
+    - version: "2.8"
+      date: "2026-03-06"
+      changes:
+        - "SCP-7: Added fix_cycle and failed states for workflow hardening"
+        - "Added explicit transitions from phase_0/phase_3/phase_5 to fix_cycle"
+        - "Added explicit transitions from fix_cycle to phase_0/phase_3/phase_5 on fix_successful"
+        - "Added explicit transitions from fix_cycle to failed on max_retries_exceeded and fix_not_possible"
+        - "Aligned workflow.version, header metadata and last_updated timestamp"
     - version: "2.7"
       date: "2026-02-10"
       changes:

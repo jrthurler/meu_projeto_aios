@@ -205,7 +205,7 @@ modernization_score:
 
     findings: |
       O workflow wf-clone-mind.yaml é uma especificação ALTAMENTE moderna de um processo
-      complexo de extração de DNA. Implementa 9/12 dos padrões AIOS de ponta.
+      complexo de extração de DNA. Implementa 9/12 dos padrões AIOX de ponta.
 
       Os 3 padrões ausentes (Teams Architecture, SKILL.md Frontmatter, Finalization)
       são ESPERADOS em um arquivo de especificação YAML. O workflow será "animado"
@@ -270,7 +270,7 @@ modernization_score:
       justification: |
         Sem Teams Architecture, workflow não pode orquestrar agentes reais.
         O SKILL.md wrapper transforma blueprint em execução automática.
-        Padrão AIOS: Spec em YAML → Orquestração em SKILL.md
+        Padrão AIOX: Spec em YAML → Orquestração em SKILL.md
 
     - priority: "HIGH"
       id: 10
@@ -286,7 +286,7 @@ modernization_score:
       effort: "1-2 hours"
       justification: |
         Sem finalization, team persiste em memória indefinidamente.
-        Cleanup é standard pattern em AIOS.
+        Cleanup é standard pattern em AIOX.
 
     - priority: "HIGH"
       id: 9
@@ -358,7 +358,7 @@ modernization_score:
   # ═══════════════════════════════════════════════════════════════════════════════
 
   evidence_references:
-    source_file: "/Users/oalanicolas/Code/mmos/squads/squad-creator-pro/workflows/wf-clone-mind.yaml"
+    source_file: "<workspace-root>/squads/squad-creator-pro/workflows/wf-clone-mind.yaml"
     validation_framework: "squads/squad-creator-pro/data/pv-workflow-validation.yaml"
     assessment_model: "Pedro Valério Modernization Score (12-point checklist)"
     assessment_timestamp: "2026-02-11T00:00:00Z"

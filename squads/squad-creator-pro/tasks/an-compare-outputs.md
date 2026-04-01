@@ -4,6 +4,7 @@
 **Version:** 1.0.0
 **Execution Type:** Agent (Opus ONLY - evaluator must be most capable model)
 **Model:** `Opus` (REQUIRED - evaluator cannot be same tier as test subject)
+**Haiku Eligible:** NO
 **Purpose:** Systematic comparison of Opus baseline vs Haiku test outputs for Model Tier Qualification
 
 ---

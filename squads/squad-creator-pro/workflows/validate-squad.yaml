@@ -12,8 +12,12 @@ workflow:
   name: "Squad Validation Workflow"
   version: "1.0.0"
   description: |
-    Tiered, context-aware validation of AIOS squads.
+    Tiered, context-aware validation of AIOX squads.
     Combines deterministic script checks with AI-powered quality assessment.
+  governance_protocol: "squads/squad-creator/protocols/ai-first-governance.md"
+  ci_policy:
+    blocking_deterministic_only: true
+    semantic_checks_in_checkpoints: true
 
   # ─────────────────────────────────────────────────────────────────────────────
   # INPUTS
@@ -138,6 +142,16 @@ workflow:
           command: "Check name, version, description, entry_agent"
           severity: "BLOCKING"
 
+        - id: "T1-WSP-001"
+          name: "workspace_integration level declared"
+          command: "Check workspace_integration.level or workspace_integration_level is present"
+          severity: "BLOCKING"
+
+        - id: "T1-WSP-002"
+          name: "workspace_integration level valid"
+          command: "Check level in [none, read_only, read_write, workspace_first]"
+          severity: "BLOCKING"
+
         - id: "T1-ENT-001"
           name: "Entry agent exists"
           command: "test -f {squad_path}/agents/{entry_agent}.md"
@@ -242,6 +256,18 @@ workflow:
           metric: "referenced / total data files"
           threshold: ">= 0.50"
           severity: "WARNING"
+
+        - id: "T2-WSP-001"
+          name: "Workspace references when required"
+          metric: "workspace refs in tasks/workflows/config when level != none"
+          threshold: ">= 1"
+          severity: "BLOCKING"
+
+        - id: "T2-WSP-002"
+          name: "Workspace-first scripts present when required"
+          metric: "bootstrap + essentials validator scripts when level == workspace_first"
+          threshold: "both present"
+          severity: "BLOCKING"
 
       output:
         tier2_pass: "count"
@@ -564,7 +590,7 @@ workflow:
     triggers:
       on_pass:
         - "Mark squad as validated"
-        - "Update squad-registry.yaml"
+        - "Update ecosystem-registry.yaml"
 
       on_fail:
         - "Notify of issues"
