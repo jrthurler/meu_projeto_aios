@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { resolveTenantFromHostname } from '@/lib/tenant/resolver'
+import { auth } from '@/lib/auth/config'
+import { checkRateLimit } from '@/lib/auth/rate-limit'
 
 // Rotas excluídas do tenant context (AC6)
 const BYPASS_PREFIXES = ['/_next/', '/favicon.ico', '/api/webhooks/']
 const STATIC_EXTENSIONS = /\.(png|jpg|jpeg|gif|svg|ico|css|js|woff|woff2|ttf)$/
+
+// Rotas protegidas que exigem autenticação
+const PROTECTED_ROUTES = ['/api/orders']
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -17,6 +22,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // AC6: Rate limiting para rota de signin
+  if (pathname === '/api/auth/signin') {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '127.0.0.1'
+    const { allowed, retryAfter } = checkRateLimit(ip)
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Muitas tentativas. Tente novamente mais tarde.' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(retryAfter) },
+        }
+      )
+    }
+  }
+
+  // Resolver tenant pelo hostname
   let tenant
   try {
     tenant = await resolveTenantFromHostname(hostname)
@@ -44,12 +65,29 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set('x-tenant-id', tenant.id)
   requestHeaders.set('x-tenant-slug', tenant.slug)
 
+  // AC3: Validar JWT.tenant_id == x-tenant-id em rotas protegidas
+  const isProtected = PROTECTED_ROUTES.some((r) => pathname.startsWith(r))
+  if (isProtected) {
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    }
+
+    const jwtTenantId = (session.user as any).tenant_id
+    if (jwtTenantId !== tenant.id) {
+      // AC3: token válido, mas não para este tenant → 403
+      return NextResponse.json(
+        { error: 'Token inválido para este restaurante' },
+        { status: 403 }
+      )
+    }
+  }
+
   return NextResponse.next({ request: { headers: requestHeaders } })
 }
 
 export const config = {
   matcher: [
-    // Aplica em todas as rotas exceto assets internos do Next.js
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }
