@@ -1,3 +1,5 @@
+import './globals.css'
+
 export const metadata = { title: 'Delivery Platform' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

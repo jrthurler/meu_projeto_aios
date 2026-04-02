@@ -1,3 +1,4 @@
+import '../globals.css'
 import { headers } from 'next/headers'
 import { getTenantConfig } from '@/lib/tenant/config'
 import { CartButton } from '@/components/cart/CartButton'

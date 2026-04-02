@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS vars padrão — sobrescritos pelo layout do tenant via style prop */
+:root {
+  --color-primary: #FF6B35;
+  --color-primary-fg: #FFFFFF;
+}
+
+/* Scrollbar horizontal fina para CategoryNav */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 0;
+}
+
+/* line-clamp utilitário (suporte para browsers antigos) */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

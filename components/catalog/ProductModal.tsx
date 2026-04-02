@@ -134,7 +134,7 @@ export function ProductModal({ produto, onClose }: ProductModalProps) {
                       className="flex items-center justify-between p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
                       style={{
                         borderColor: isSelected ? 'var(--color-primary)' : '#e5e7eb',
-                        backgroundColor: isSelected ? 'color-mix(in srgb, var(--color-primary) 10%, white)' : undefined,
+                        backgroundColor: isSelected ? '#f9fafb' : undefined,
                       }}
                     >
                       <div className="flex items-center gap-3">
