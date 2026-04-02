@@ -9,14 +9,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
         email: { label: 'Email', type: 'email' },
         senha: { label: 'Senha', type: 'password' },
-        tenant_id: { label: 'Tenant ID', type: 'text' },
       },
-      async authorize(credentials) {
-        const { email, senha, tenant_id } = credentials as {
+      async authorize(credentials, request) {
+        const { email, senha } = credentials as {
           email: string
           senha: string
-          tenant_id: string
         }
+
+        // AC1: tenant_id extraído do header injetado pelo middleware — nunca do body/credentials
+        const tenant_id = request?.headers?.get('x-tenant-id') ?? null
 
         if (!email || !senha || !tenant_id) return null
 
