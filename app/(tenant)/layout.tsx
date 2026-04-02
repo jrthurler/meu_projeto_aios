@@ -1,5 +1,6 @@
 import { headers } from 'next/headers'
 import { getTenantConfig } from '@/lib/tenant/config'
+import { CartButton } from '@/components/cart/CartButton'
 import type { Metadata } from 'next'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,6 +49,31 @@ export default async function TenantLayout({ children }: { children: React.React
           >
             Fechado no momento — Consulte nossos horários de funcionamento
           </div>
+        )}
+        {/* AC7 (Story 2.3): header com CartButton */}
+        {config && (
+          <header
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.75rem 1rem',
+              borderBottom: '1px solid #e5e7eb',
+              background: 'white',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {config.logo_url && (
+                <img
+                  src={config.logo_url}
+                  alt={config.nome}
+                  style={{ width: 32, height: 32, borderRadius: 6, objectFit: 'cover' }}
+                />
+              )}
+              <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{config.nome}</span>
+            </div>
+            <CartButton />
+          </header>
         )}
         {children}
       </body>
