@@ -4,7 +4,7 @@ import { getCategories, getProducts } from '@/lib/catalog/queries'
 import { MenuClient } from '@/components/catalog/MenuClient'
 
 export default async function MenuPage() {
-  const tenantId = headers().get('x-tenant-id')
+  const tenantId = (await headers()).get('x-tenant-id')
 
   if (!tenantId) {
     return (

@@ -1,8 +1,9 @@
 import { headers } from 'next/headers'
 
-export default function RootPage() {
-  const tenantId = headers().get('x-tenant-id')
-  const tenantSlug = headers().get('x-tenant-slug')
+export default async function RootPage() {
+  const h = await headers()
+  const tenantId = h.get('x-tenant-id')
+  const tenantSlug = h.get('x-tenant-slug')
 
   if (tenantId) {
     return (

@@ -5,7 +5,7 @@ import { CartButton } from '@/components/cart/CartButton'
 import type { Metadata } from 'next'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const tenantId = headers().get('x-tenant-id')
+  const tenantId = (await headers()).get('x-tenant-id')
   if (!tenantId) return { title: 'Delivery' }
 
   const config = await getTenantConfig(tenantId)
@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TenantLayout({ children }: { children: React.ReactNode }) {
-  const tenantId = headers().get('x-tenant-id')
+  const tenantId = (await headers()).get('x-tenant-id')
   const config = tenantId ? await getTenantConfig(tenantId) : null
 
   // AC5: CSS vars injetadas no <html> para Tailwind v4 consumir

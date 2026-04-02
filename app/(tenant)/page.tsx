@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import { getTenantConfig } from '@/lib/tenant/config'
 
 export default async function TenantHomePage() {
-  const tenantId = headers().get('x-tenant-id')
+  const tenantId = (await headers()).get('x-tenant-id')
   const config = tenantId ? await getTenantConfig(tenantId) : null
 
   if (!config) {
