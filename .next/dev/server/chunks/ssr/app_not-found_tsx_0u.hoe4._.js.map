@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/code/meu_projeto_aios/app/not-found.tsx"],"sourcesContent":["export default function NotFound() {\r\n  return (\r\n    <main style={{ fontFamily: 'system-ui, sans-serif', textAlign: 'center', padding: '4rem 1rem' }}>\r\n      <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#111' }}>\r\n        Restaurante não encontrado\r\n      </h1>\r\n      <p style={{ color: '#555', marginTop: '0.75rem' }}>\r\n        O endereço acessado não corresponde a nenhum restaurante cadastrado na plataforma.\r\n      </p>\r\n      <p style={{ color: '#888', marginTop: '0.5rem', fontSize: '0.875rem' }}>\r\n        Verifique o endereço e tente novamente.\r\n      </p>\r\n    </main>\r\n  )\r\n}\r\n"],"names":["NotFound","style","fontFamily","textAlign","padding","fontSize","fontWeight","color","marginTop"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAKC,OAAO;YAAEC,YAAY;YAAyBC,WAAW;YAAUC,SAAS;QAAY;;0BAC5F,8OAAC;gBAAGH,OAAO;oBAAEI,UAAU;oBAAQC,YAAY;oBAAKC,OAAO;gBAAO;0BAAG;;;;;;0BAGjE,8OAAC;gBAAEN,OAAO;oBAAEM,OAAO;oBAAQC,WAAW;gBAAU;0BAAG;;;;;;0BAGnD,8OAAC;gBAAEP,OAAO;oBAAEM,OAAO;oBAAQC,WAAW;oBAAUH,UAAU;gBAAW;0BAAG;;;;;;;;;;;;AAK9E"}}]
+}

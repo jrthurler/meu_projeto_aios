@@ -4,7 +4,7 @@ import type { TenantConfig } from './types'
 
 // AC4: campos sensíveis NUNCA retornados
 const CAMPOS_PUBLICOS =
-  'id, slug, nome, logo_url, banner_url, cor_primaria, cor_primaria_texto, horarios, ativo, frete_base, frete_gratis_acima, tempo_preparo_min, atualizado_em'
+  'id, slug, nome, logo_url, banner_url, cor_primaria, cor_primaria_texto, horarios, ativo, config, atualizado_em'
 
 export async function getTenantConfig(tenantId: string): Promise<TenantConfig | null> {
   const supabase = createClient(
@@ -36,8 +36,8 @@ export async function getTenantConfig(tenantId: string): Promise<TenantConfig | 
     cor_primaria_texto: data.cor_primaria_texto ?? '#FFFFFF',
     horarios: data.horarios ?? {},
     status,
-    frete_base: data.frete_base ?? 0,
-    frete_gratis_acima: data.frete_gratis_acima ?? 0,
-    tempo_preparo_min: data.tempo_preparo_min ?? 30,
+    frete_base: data.config?.frete_base ?? 0,
+    frete_gratis_acima: data.config?.frete_gratis_acima ?? 0,
+    tempo_preparo_min: data.config?.tempo_preparo_min ?? 30,
   }
 }

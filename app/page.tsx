@@ -1,18 +1,11 @@
 import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export default async function RootPage() {
-  const h = await headers()
-  const tenantId = h.get('x-tenant-id')
-  const tenantSlug = h.get('x-tenant-slug')
+  const tenantId = (await headers()).get('x-tenant-id')
 
   if (tenantId) {
-    return (
-      <main style={{ fontFamily: 'system-ui, sans-serif', textAlign: 'center', padding: '4rem 1rem' }}>
-        <h1>Tenant Resolvido ✓</h1>
-        <p><strong>Slug:</strong> <code>{tenantSlug}</code></p>
-        <p><strong>ID:</strong> <code>{tenantId}</code></p>
-      </main>
-    )
+    redirect('/menu')
   }
 
   return (

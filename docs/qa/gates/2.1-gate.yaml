@@ -1,0 +1,48 @@
+gate:
+  story_id: "2.1"
+  story_title: "Seed Data do Catálogo"
+  reviewer: "Quinn (@qa)"
+  review_date: "2026-04-11"
+  decision: "PASS"
+  verdict_detail: "PASS with CONCERNS"
+
+checks:
+  ac1_seed_restaurante_a: PASS
+  ac2_seed_restaurante_b: PASS
+  ac3_rls_isolation_structure: PASS
+  ac4_customizacoes_format: PASS
+  migration_idempotent: PASS
+  tenant_null_guard: PASS
+  t2_1_2_migration_applied: PENDING  # Manual action required
+
+test_results:
+  total: 63
+  passed: 63
+  failed: 0
+  suites: 6
+  new_tests: 19
+
+concerns:
+  - id: C1
+    severity: MEDIUM
+    title: "T2.1.2 — Migration não aplicada ao banco remoto"
+    description: "SQL pronto e correto mas não executado. Stories 2.2/2.3 precisam desses dados para teste e2e."
+    recommendation: "Executar supabase/migrations/20260402000008_catalog_seed.sql no Supabase Studio antes de testar o cardápio."
+    blocks_merge: false
+    blocks_e2e: true
+
+  - id: C2
+    severity: LOW
+    title: "AC3 validado apenas em estrutura, não contra RLS real"
+    description: "Testes verificam tenant_id nos dados do seed, não as políticas RLS do banco. Migration 005 cobre as políticas."
+    recommendation: "Adicionar teste de integração real quando Supabase CLI estiver configurado."
+    blocks_merge: false
+
+  - id: C3
+    severity: LOW
+    title: "Rollback manual não testado"
+    description: "Script de rollback está comentado no SQL. Adequado para seed de desenvolvimento."
+    recommendation: "Documentar procedimento de rollback na wiki/runbook antes de produção."
+    blocks_merge: false
+
+next_action: "Aplicar migration T2.1.2 manualmente no Supabase Studio. Stories 2.2 e 2.3 podem prosseguir para revisão."

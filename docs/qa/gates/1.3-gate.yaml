@@ -1,0 +1,54 @@
+gate:
+  story_id: "1.3"
+  story_title: "Autenticação de Cliente por Tenant"
+  reviewer: "Quinn (@qa)"
+  review_date: "2026-04-11"
+  decision: "PASS"
+  verdict_detail: "PASS with CONCERNS"
+
+checks:
+  ac1_signup: PASS
+  ac2_login: PASS
+  ac3_jwt_tenant_scope: PASS
+  ac4_protected_routes: PASS
+  ac5_logout: PASS
+  ac6_owasp_a07: PASS
+  ac7_tests: PASS
+  no_plaintext_credentials: PASS
+
+test_results:
+  total: 44
+  passed: 44
+  failed: 0
+  suites: 5
+
+concerns:
+  - id: C1
+    severity: MEDIUM
+    title: "Rate limiting in-memory não persiste entre restarts"
+    description: "Map em memória resets on server restart. Bypass possível em horizontal scaling."
+    recommendation: "Migrar para Redis/Upstash KV antes de produção"
+    blocks_merge: false
+
+  - id: C2
+    severity: LOW
+    title: "NextAuth v5 em beta"
+    description: "next-auth@5.x ainda não tem release estável. APIs podem mudar."
+    recommendation: "Monitorar releases; migrar quando v5 estável"
+    blocks_merge: false
+
+  - id: C3
+    severity: LOW
+    title: "Email de verificação Resend é placeholder"
+    description: "RESEND_API_KEY não configurada. Usuários não recebem confirmação de email."
+    recommendation: "Configurar RESEND_API_KEY em ambiente de staging/produção"
+    blocks_merge: false
+
+  - id: C4
+    severity: LOW
+    title: "Testes AC7 são simulações unitárias, sem integração real"
+    description: "Nenhum teste e2e com Playwright validando fluxo real NextAuth + Supabase."
+    recommendation: "Adicionar testes Playwright para login/signup em sprint futura"
+    blocks_merge: false
+
+next_action: "Story 1.4 pode iniciar. Concerns C1-C4 são débitos técnicos para sprints futuras."

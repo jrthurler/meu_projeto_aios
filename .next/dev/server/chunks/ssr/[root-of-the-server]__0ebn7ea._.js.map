@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///C:/code/meu_projeto_aios/app/page.tsx"],"sourcesContent":["import { headers } from 'next/headers'\r\nimport { redirect } from 'next/navigation'\r\n\r\nexport default async function RootPage() {\r\n  const tenantId = (await headers()).get('x-tenant-id')\r\n\r\n  if (tenantId) {\r\n    redirect('/menu')\r\n  }\r\n\r\n  return (\r\n    <main style={{ fontFamily: 'system-ui, sans-serif', textAlign: 'center', padding: '4rem 1rem' }}>\r\n      <h1>Delivery Platform</h1>\r\n      <p>Acesse via subdomínio do restaurante: <code>restaurante-a.localhost:3000</code></p>\r\n    </main>\r\n  )\r\n}\r\n"],"names":["RootPage","tenantId","get","style","fontFamily","textAlign","padding"],"mappings":";;;;;AAAA;AACA;AAAA;;;;AAEe,eAAeA;IAC5B,MAAMC,WAAW,CAAC,MAAM,IAAA,0IAAO,GAAE,EAAEC,GAAG,CAAC;IAEvC,IAAID,UAAU;QACZ,IAAA,iMAAQ,EAAC;IACX;IAEA,qBACE,8OAAC;QAAKE,OAAO;YAAEC,YAAY;YAAyBC,WAAW;YAAUC,SAAS;QAAY;;0BAC5F,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;;oBAAE;kCAAsC,8OAAC;kCAAK;;;;;;;;;;;;;;;;;;AAGrD"}}]
+}

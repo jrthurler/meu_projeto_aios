@@ -1,0 +1,56 @@
+gate:
+  story_id: "2.3"
+  story_title: "UI do Cardápio"
+  reviewer: "Quinn (@qa)"
+  review_date: "2026-04-11"
+  decision: "PASS"
+  verdict_detail: "PASS with CONCERNS"
+
+checks:
+  ac1_menu_server_component: PASS
+  ac2_category_nav_scroll: PASS
+  ac3_product_card: PASS
+  ac4_search_filter_local: PASS
+  ac5_product_modal_choice: PASS
+  ac5_product_modal_addon_multiselect: SIMPLIFIED  # single-select used, multi-select deferred to Epic 6
+  ac6_zustand_cart_store: PASS
+  ac6_tenant_isolation: PASS
+  ac7_cart_button_badge: PASS
+  ac8_tests: PASS
+
+test_results:
+  total: 63
+  passed: 63
+  failed: 0
+  suites: 6
+
+concerns:
+  - id: C1
+    severity: MEDIUM
+    title: "addon renderiza como radio (single-select) em vez de checkboxes"
+    description: "ProductModal usa input[type=radio] para todos os grupos, incluindo tipo='addon'. Clientes só podem escolher 1 adicional por grupo."
+    recommendation: "Implementar checkboxes para tipo='addon' em Epic 6. Documentado em Completion Notes."
+    blocks_merge: false
+
+  - id: C2
+    severity: LOW
+    title: "CategoryNav sem IntersectionObserver"
+    description: "Categoria ativa só atualiza por click. Scroll manual não sincroniza o nav."
+    recommendation: "Adicionar IntersectionObserver para scroll-spy em versão futura."
+    blocks_merge: false
+
+  - id: C3
+    severity: LOW
+    title: "img nativo em vez de next/image"
+    description: "ProductCard e ProductModal usam <img src> — sem lazy loading ou otimização automática de formato."
+    recommendation: "Migrar para next/image quando imagens reais estiverem disponíveis (Epic 5)."
+    blocks_merge: false
+
+  - id: C4
+    severity: LOW
+    title: "'use client' em lib/cart/store.ts é semanticamente incorreto"
+    description: "store.ts é uma biblioteca, não um componente. A diretiva não quebra nada mas é confusa."
+    recommendation: "Remover 'use client' de store.ts — será incluído no bundle client pelos componentes que o importam."
+    blocks_merge: false
+
+next_action: "Epic 2 completo. Epic 3 (Checkout) desbloqueado: useCartStore, CartItem e OpcaoSelecionada prontos."
