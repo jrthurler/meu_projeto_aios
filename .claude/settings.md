@@ -1,6 +1,6 @@
+
 {
-  "language": "english",
-   "permissions": {
+  "permissions": {
     "defaultMode": "acceptEdits",
     "allow": [
       "Read",

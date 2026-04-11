@@ -1,0 +1,55 @@
+gate:
+  story_id: "2.2"
+  story_title: "APIs do Catálogo"
+  reviewer: "Quinn (@qa)"
+  review_date: "2026-04-11"
+  decision: "PASS"
+  verdict_detail: "PASS with CONCERNS"
+
+checks:
+  ac1_categories_endpoint: PASS
+  ac2_products_endpoint: PASS
+  ac3_product_by_id_isolation: PASS
+  ac4_cache_control: PASS
+  ac4_etag: MISSING  # Specified in AC but not implemented
+  ac5_single_select: PASS
+  ac5_ilike_search: PASS
+  ac6_tests: PASS
+  no_sensitive_fields: PASS
+
+test_results:
+  total: 63
+  passed: 63
+  failed: 0
+  suites: 6
+
+concerns:
+  - id: C1
+    severity: MEDIUM
+    title: "ETag ausente nas 3 rotas do catálogo"
+    description: "AC4 especifica ETag baseado em tenant_id + updated_at. Sem ETag, conditional GET não funciona — clientes não podem usar If-None-Match para evitar re-download do catálogo."
+    recommendation: "Implementar junto com Epic 5 (gestão de catálogo). Baixo impacto em MVP sem updates frequentes."
+    blocks_merge: false
+
+  - id: C2
+    severity: LOW
+    title: "Produto indisponível retorna 404 em vez de 200 com disponivel=false"
+    description: "getProductById filtra disponivel=true — produto existente mas off retorna 404. Semanticamente impreciso."
+    recommendation: "Aceitável para MVP. Revisar na Story de gestão de disponibilidade (Epic 5)."
+    blocks_merge: false
+
+  - id: C3
+    severity: LOW
+    title: "Erro de DB silencioso — retorna [] em vez de 503"
+    description: "getCategories e getProducts retornam [] tanto para 'sem dados' quanto para falha de conexão. Dificulta debugging."
+    recommendation: "Adicionar log de erro e considerar status 503 em falhas reais de DB (Epic 6 quality pass)."
+    blocks_merge: false
+
+  - id: C4
+    severity: LOW
+    title: "params.id sem await — padrão Next.js 15+ obsoleto"
+    description: "Next.js 15+ tornou params assíncrono. Padrão atual { params: { id: string } } pode gerar warnings futuros."
+    recommendation: "Migrar para await params quando Next.js 16.x exigir. Consistente com todo o codebase atual."
+    blocks_merge: false
+
+next_action: "Story 2.3 (UI do Cardápio) desbloqueada. C1 (ETag) para Epic 5. C3 (erro silencioso) para Epic 6."

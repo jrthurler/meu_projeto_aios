@@ -1,0 +1,14 @@
+ Próximos passos:
+
+  1. Reinicie o sistema para o Docker funcionar
+  2. Adicione ao PATH (PowerShell):
+  [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$env:USERPROFILE\.local\bin", "User")
+  3. Repositório: https://github.com/jrthurler/meu_projeto_aios
+
+  Projeto pronto para desenvolvimento! Quer iniciar com @pm para criar o PRD ou @sm para criar a primeira story?
+
+  — Gage, deployando com confiança 🚀
+
+
+wsl --install -d Ubuntu
+
